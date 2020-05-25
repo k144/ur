@@ -1,0 +1,51 @@
+body
+{
+    background-color: rgb(125, 127, 253);
+    
+}
+#header
+{
+    width: 1500px;
+    height: 50px;
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+#lefter
+{
+    width: 200px;
+    height: 550px;
+    border: 1px solid black;
+    float: left;
+    margin-left: 9px;
+    text-align: center;
+}
+#game
+{
+    width:1096px;
+    height: 550px;
+    border: 1px solid black;
+    float: left;
+    text-align: center;
+    
+}
+#righter
+{
+    width: 200px;
+    height: 550px;
+    border: 1px solid black;
+    float: right;
+    margin-right: 9px;
+    text-align: center;
+}
+#footer
+{
+    width: 1500px;
+    height: 50px;
+    border: 1px solid black;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
