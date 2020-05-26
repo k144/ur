@@ -1,0 +1,18 @@
+plansza:
+	klasa i w niej funkcje
+	
+pionki:
+	obiekt pionki white i black
+	pionek:
+		
+		tam tablica z pionkami
+		kazdy pionek przechowuje swoje inf, polozenie
+
+kostki:
+	4x kostka pojedyncza:
+		funkcja rand
+
+peer to peer:
+	sieci	
+
+funkcja rysuj
