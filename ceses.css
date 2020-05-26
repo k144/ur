@@ -29,12 +29,14 @@ body
     display: grid;
     font-size: 4rem;
     grid-template-columns: repeat(3, 1em);
-    grid-template-rows: repeat(8, 1em); 
+    grid-template-rows: repeat(8, 1em);
 }
 
 .tile
 {
     background: white;
+    border: 1px solid black;
+    box-sizing: border-box;
 
 }
 
