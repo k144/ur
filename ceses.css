@@ -40,15 +40,40 @@ body
 .tile
 {
     background: white;
-    border: 1px solid black;
+    background-size: cover !important;
     box-sizing: border-box;
 }
 
 .tile-rosette
 {
-    background: #ff9676;
-    background-image: url('./resources/re_roll_place.png');
-    background-size: cover;
+    background: url('./resources/rosette.png');
+}
+
+.tile-gate
+{
+    background: url('./resources/gate.png');
+
+}
+
+.tile-temple
+{
+    background: url('./resources/temple.png')
+}
+
+.tile-house
+{
+    background: url('./resources/house.png');
+}
+
+.tile-market
+{
+    background: url('./resources/market.png')
+}
+
+.tile-treasury
+{
+    background: url('./resources/treasury.png');
+
 }
 
 

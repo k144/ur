@@ -1,73 +1,55 @@
 let boardDiv = document.getElementById("board");
 
+let tileTypeMap = new Map([
+    ['*', "rosette"],
+    ['H', "gate"],
+    ['O', "temple"],
+    ['.', "house"],
+    ['+', "market"],
+    ['X', "treasury"]
 
-let boardLeftBeg = [
-    [1, 1, "rosette"],
-    [1, 2],
-    [1, 3],
-    [1, 4],
-]
+]);
 
-let boardRightBeg = [
-    [3, 1, "rosette"],
-    [3, 2],
-    [3, 3],
-    [3, 4],
-]
-
-let boardCenter = [
-    [2, 1],
-    [2, 2],
-    [2, 3],
-    [2, 4, "rosette"],
-    [2, 5],
-    [2, 6],
-    [2, 7],
-    [2, 8],
-]
-
-let boardLeftEnd = [
-    [1, 8],
-    [1, 7, "rosette"],
-]
-
-let boardRightEnd = [
-    [3, 8],
-    [3, 7, "rosette"],
-]
-
-
-
-board = [
-    boardLeftBeg, boardRightBeg,
-    boardCenter,
-    boardLeftEnd, boardRightEnd
+let board = [
+    '*H*',
+    'O.O',
+    '.+.',
+    'O*O',
+    ' . ',
+    ' + ',
+    '*O*',
+    'X.X',
 ];
 
 
 function putTile (x, y, type)
 {
-    let t = document.createElement("div");
+    let tile = document.createElement("div");
 
-    t.className = "tile";
+    tile.className = "tile";
     if (type != undefined) {
-        t.className += ` tile-${type}`;
+        tile.className += ` tile-${type}`;
     }
 
-    t.style.gridColumn = x + "/ span 1";
-    t.style.gridRow = y + "/ span 1";
+    tile.style.gridColumn = x + "/ span 1";
+    tile.style.gridRow = y + "/ span 1";
 
-    boardDiv.append(t);
+    boardDiv.append(tile);
 }
 
 function drawBoard ()
 {
-    board.forEach((elem) =>
-    {
-        elem.forEach((arr) =>
-        {
-            [x, y, type] = arr;
-            putTile (x, y, type);
+    board.forEach((row, i) => {
+        [...row].forEach((tile, j) => {
+            if (tile == ' ') 
+            {
+                return;
+            }
+            let type = tileTypeMap.get(tile);
+
+            // iteratory w foreach() zaczynają się od 0, a elementy w gridzie od 1
+            // dlatego trzeba dodać 1
+            putTile(j+1, i+1, type);
         })
     })
 }
