@@ -1,6 +1,6 @@
 body
 {
-    background-color: rgb(125, 127, 253);
+    background-color: rgb(167, 162, 142);
     font-size: 15px;
 }
 #header
@@ -13,6 +13,8 @@ body
 }
 #game
 {
+    display: flex;
+    justify-content: center;
     width: 70%;
     border: 1px solid black;
     margin-left: auto;
@@ -26,8 +28,11 @@ body
 
 #board
 {
-    display: grid;
+    margin-left: auto;
+    margin-right: auto;
     font-size: 4rem;
+    display: grid;
+    grid-gap: 0.2rem;
     grid-template-columns: repeat(3, 1em);
     grid-template-rows: repeat(8, 1em);
 }
@@ -37,7 +42,13 @@ body
     background: white;
     border: 1px solid black;
     box-sizing: border-box;
+}
 
+.tile-rosette
+{
+    background: #ff9676;
+    background-image: url('./resources/re_roll_place.png');
+    background-size: cover;
 }
 
 
