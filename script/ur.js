@@ -48,7 +48,7 @@ function drawBoard ()
             let type = tileTypeMap.get(tile);
 
             // iteratory w foreach() zaczynają się od 0, a elementy w gridzie od 1
-            // dlatego trzeba dodać 1
+            // dlatego trzeba dodać 1 //zerzniete z magicznych bloczkow
             putTile(j+1, i+1, type);
         })
     })
