@@ -21,6 +21,26 @@ let board = [
     'X.X',
 ];
 
+let Kolor = {CZARNY:1, BIALY:2};
+let Side = {US:1, THEM:2};
+
+class Pawn {
+    constructor(color,side){
+        this.color=color;
+        this.side=side;
+        this.pos=0;
+    }
+    move(n){
+        this.pos+=n;
+        //sprawdz czy miejsce jest wolne
+        
+    }
+}
+
+let white=new Pawn(Kolor.BIALY,Side.US);
+white.move(5);
+white.move(1);
+console.log(white);
 
 function putTile (x, y, type)
 {
@@ -53,5 +73,6 @@ function drawBoard ()
         })
     })
 }
+
 
 drawBoard();
