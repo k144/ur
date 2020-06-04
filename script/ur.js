@@ -22,7 +22,8 @@ let board = [
 ];
 
 
-let Kolor = {CZARNY:1, BIALY:2};
+
+let Kolor = {BLACK:1, WHITE:2};
 let Side = {US:1, THEM:2};
 
 class Pawn {
@@ -38,7 +39,12 @@ class Pawn {
     }
 }
 
-function putTile (x, y, type)
+let tiles = new Array(board.length);
+for (let i = 0; i < tiles.length; i++) {
+    tiles[i] = new Array(3)
+}
+
+function makeTile (x, y, type)
 {
     let tile = document.createElement("div");
 
@@ -47,14 +53,11 @@ function putTile (x, y, type)
         tile.className += ` tile-${type}`;
     }
 
-    tile.dataset.x = x;
-    tile.dataset.y = y;
-
-
     tile.style.gridColumn = x + "/ span 1";
     tile.style.gridRow = y + "/ span 1";
 
     boardDiv.append(tile);
+    tiles[x-1][y-1] = tile;
 }
 
 function drawBoard ()
@@ -69,7 +72,7 @@ function drawBoard ()
 
             // iteratory w foreach() zaczynają się od 0, a elementy w gridzie od 1
             // dlatego trzeba dodać 1 //zerzniete z magicznych bloczkow
-            putTile(j+1, i+1, type);
+            makeTile(j+1, i+1, type);
         })
     })
 
@@ -80,24 +83,36 @@ function drawPawn(pawn) {
     let side = pawn.side;
     let pos = pawn.pos;
 
+    let pawnDiv = document.createElement("div");
+    pawnDiv.className = "pawn"
+
     let row, col;
 
-    if (pos <= 4) {
-        row = 5 - pos;
-    } else if (pos <= 12) {
-        row = pos - 4;
+    if (side == Side.US) {
+        col = 1;
+    } else if (side == Side.THEM) {
+        col = 3;
     }
 
+    if (pos <= 4) {
+        row = 5-pos;
+    } else if (pos <= 12) {
+        row = pos-4;
+        col = 2;
+    } else {
+        row = 13-pos + 8;
+    }
 
-
-    console.log(side, pos);
+    tiles[col-1][row-1].append(pawnDiv);
 
 }
 
 
-let white=new Pawn(Kolor.BIALY,Side.US);
-white.move(2);
-
+let white=new Pawn(Kolor.WHITE,Side.US);
+let black=new Pawn(Kolor.BLACK,Side.THEM);
+black.move(1);
+white.move(14);
 
 drawBoard();
 drawPawn(white);
+drawPawn(black);
