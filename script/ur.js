@@ -115,12 +115,26 @@ function drawPawn(pawn) {
 
 }
 
+//function dices(){
+    //kostki, losowanie
+//}
 
-let white=new Pawn(Color.WHITE,Side.US);
-let black=new Pawn(Color.BLACK,Side.THEM);
-black.move(3);
-white.move(8);
+function init(){
+    let usPawns=new Array();
+    let themPawns=new Array();
+    let white=new Pawn(Color.WHITE,Side.US);
+    let black=new Pawn(Color.BLACK,Side.THEM);
+    black.move(1);
+    white.move(1);
 
-drawBoard();
-drawPawn(white);
-drawPawn(black);
+    drawBoard();
+    drawPawn(white);
+    drawPawn(black);
+
+    for(let i=0;i<7;i++){
+        usPawns.push(new Pawn(Color.WHITE,Side.US));
+        themPawns.push(new Pawn(Color.BLACK,Side.THEM));
+    }
+}
+
+init();
