@@ -6,8 +6,8 @@ let tileTypeMap = new Map([
     ['O', "temple"],
     ['.', "house"],
     ['+', "market"],
-    ['X', "treasury"]
-
+    ['X', "treasury"],
+    [' ', "empty"],
 ]);
 
 let board = [
@@ -31,9 +31,11 @@ class Pawn {
         this.color=color;
         this.side=side;
         this.pos=0;
+        this.div = document.createElement("div");
     }
     move(n){
         this.pos+=n;
+        drawPawn(this);
         //sprawdz czy miejsce jest wolne
         
     }
@@ -44,7 +46,7 @@ for (let i = 0; i < tiles.length; i++) {
     tiles[i] = new Array(3)
 }
 
-function makeTile (x, y, type)
+function putTile (x, y, type)
 {
     let tile = document.createElement("div");
 
@@ -64,15 +66,11 @@ function drawBoard ()
 {
     board.forEach((row, i) => {
         [...row].forEach((tile, j) => {
-            if (tile == ' ') 
-            {
-                return;
-            }
             let type = tileTypeMap.get(tile);
 
             // iteratory w foreach() zaczynają się od 0, a elementy w gridzie od 1
             // dlatego trzeba dodać 1 //zerzniete z magicznych bloczkow
-            makeTile(j+1, i+1, type);
+            putTile(j+1, i+1, type);
         })
     })
 
@@ -83,14 +81,15 @@ function drawPawn(pawn) {
     let side = pawn.side;
     let pos = pawn.pos;
     let color = pawn.color;
+    let div = pawn.div;
 
-    let pawnDiv = document.createElement("div");
-    pawnDiv.classList.add("pawn");
+
+    div.classList.add("pawn");
     if(color==Color.BLACK){
-        pawnDiv.classList.add("pawn-black");
+        div.classList.add("pawn-black");
     }
     if(color==Color.WHITE){
-        pawnDiv.classList.add("pawn-white");
+        div.classList.add("pawn-white");
     }
     
 
@@ -111,29 +110,44 @@ function drawPawn(pawn) {
         row = 13-pos + 8;
     }
 
-    tiles[col-1][row-1].append(pawnDiv);
+    tiles[col-1][row-1].appendChild(div);
 
+}
+
+function drawPawns(stack) {
+    for (let i=0; i<stack.length; i++) {
+        drawPawn(stack[i]);
+    }
 }
 
 //function dices(){
     //kostki, losowanie
 //}
 
-function init(){
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function init(){
+    drawBoard();
     let usPawns=new Array();
     let themPawns=new Array();
-    let white=new Pawn(Color.WHITE,Side.US);
-    let black=new Pawn(Color.BLACK,Side.THEM);
-    black.move(1);
-    white.move(1);
-
-    drawBoard();
-    drawPawn(white);
-    drawPawn(black);
 
     for(let i=0;i<7;i++){
         usPawns.push(new Pawn(Color.WHITE,Side.US));
         themPawns.push(new Pawn(Color.BLACK,Side.THEM));
+    }
+
+    drawPawns(usPawns);
+    drawPawns(themPawns);
+
+    for (let i=0; i<15; i++) {
+        themPawns[1].move(1);
+        await sleep(500);
+        usPawns[2].move(1);
+        await sleep(500);
+
     }
 }
 

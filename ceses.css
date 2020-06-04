@@ -40,9 +40,9 @@ body
 
 .tile
 {
-    background: white;
     background-size: cover !important;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .tile-rosette
@@ -74,12 +74,23 @@ body
 .tile-treasury
 {
     background: url('./resources/treasury.png');
+}
 
+.tile-empty
+{
+    position: relative;
+}
+
+.tile-empty *
+{
+    position: absolute;
+    top: 0;
 }
 
 
 
-.pawn {
+.pawn
+{
     width: 100%;
     height: 100%;
     background: black;
@@ -87,13 +98,19 @@ body
     box-sizing: border-box;
 }
 
-.pawn-white{
+.pawn-white
+{
     background: url('./resources/white_pawn.png');
 }
 
-.pawn-black{
+.pawn-black
+{
     background: url('./resources/black_pawn.png');
 }
+
+
+
+
 
 #footer
 {
