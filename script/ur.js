@@ -36,7 +36,7 @@ class Pawn {
         
     }
 }
-
+//testy
 let white=new Pawn(Kolor.BIALY,Side.US);
 white.move(5);
 white.move(1);
