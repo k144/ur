@@ -21,6 +21,7 @@ let board = [
     'X.X',
 ];
 
+
 let Kolor = {CZARNY:1, BIALY:2};
 let Side = {US:1, THEM:2};
 
@@ -36,11 +37,6 @@ class Pawn {
         
     }
 }
-//testy
-let white=new Pawn(Kolor.BIALY,Side.US);
-white.move(5);
-white.move(1);
-console.log(white);
 
 function putTile (x, y, type)
 {
@@ -50,6 +46,10 @@ function putTile (x, y, type)
     if (type != undefined) {
         tile.className += ` tile-${type}`;
     }
+
+    tile.dataset.x = x;
+    tile.dataset.y = y;
+
 
     tile.style.gridColumn = x + "/ span 1";
     tile.style.gridRow = y + "/ span 1";
@@ -72,7 +72,32 @@ function drawBoard ()
             putTile(j+1, i+1, type);
         })
     })
+
+
+}
+
+function drawPawn(pawn) {
+    let side = pawn.side;
+    let pos = pawn.pos;
+
+    let row, col;
+
+    if (pos <= 4) {
+        row = 5 - pos;
+    } else if (pos <= 12) {
+        row = pos - 4;
+    }
+
+
+
+    console.log(side, pos);
+
 }
 
 
+let white=new Pawn(Kolor.BIALY,Side.US);
+white.move(2);
+
+
 drawBoard();
+drawPawn(white);
