@@ -23,7 +23,7 @@ let board = [
 
 
 
-let Kolor = {BLACK:1, WHITE:2};
+let Color = {BLACK:1, WHITE:2};
 let Side = {US:1, THEM:2};
 
 class Pawn {
@@ -82,9 +82,17 @@ function drawBoard ()
 function drawPawn(pawn) {
     let side = pawn.side;
     let pos = pawn.pos;
+    let color = pawn.color;
 
     let pawnDiv = document.createElement("div");
-    pawnDiv.className = "pawn"
+    pawnDiv.classList.add("pawn");
+    if(color==Color.BLACK){
+        pawnDiv.classList.add("pawn-black");
+    }
+    if(color==Color.WHITE){
+        pawnDiv.classList.add("pawn-white");
+    }
+    
 
     let row, col;
 
@@ -108,10 +116,10 @@ function drawPawn(pawn) {
 }
 
 
-let white=new Pawn(Kolor.WHITE,Side.US);
-let black=new Pawn(Kolor.BLACK,Side.THEM);
-black.move(1);
-white.move(14);
+let white=new Pawn(Color.WHITE,Side.US);
+let black=new Pawn(Color.BLACK,Side.THEM);
+black.move(3);
+white.move(8);
 
 drawBoard();
 drawPawn(white);

@@ -87,6 +87,14 @@ body
     box-sizing: border-box;
 }
 
+.pawn-white{
+    background: url('./resources/white_pawn.png');
+}
+
+.pawn-black{
+    background: url('./resources/black_pawn.png');
+}
+
 #footer
 {
     line-height: 3rem;
