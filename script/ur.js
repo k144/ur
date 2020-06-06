@@ -21,10 +21,35 @@ let board = [
     'X.X',
 ];
 
+let tilesToMove = 2;
 
 
 let Color = {BLACK:1, WHITE:2};
 let Side = {US:1, THEM:2};
+
+function locate (pawn, offset = 0) {
+    let side = pawn.side;
+    let pos = pawn.pos + offset;
+
+    let row, col;
+
+    if (side == Side.US) {
+        col = 1;
+    } else if (side == Side.THEM) {
+        col = 3;
+    }
+
+    if (pos <= 4) {
+        row = 5-pos;
+    } else if (pos <= 12) {
+        row = pos-4;
+        col = 2;
+    } else {
+        row = 13-pos + 8;
+    }
+    return tiles[col-1][row-1];
+
+}
 
 class Pawn {
     constructor(color,side){
@@ -32,14 +57,49 @@ class Pawn {
         this.side=side;
         this.pos=0;
         this.div = document.createElement("div");
-    }
-    move(n){
-        this.pos+=n;
-        drawPawn(this);
-        //sprawdz czy miejsce jest wolne
+        this.div.addEventListener("click", () => {
+            this.clearSel(tilesToMove);
+            this.move(tilesToMove);
+            tilesToMove = Math.floor((Math.random() * 4) + 1);
+        }
+        );
+        this.div.addEventListener("mouseover", () => {
+            this.showLegalMoves(tilesToMove);
+        }
+        );
+        this.div.addEventListener("mouseleave", () => {
+            this.clearSel(tilesToMove);
+        }
+        );
         
     }
+    move(n) {
+        
+        this.pos+=n;
+        this.draw();
+        //sprawdz czy miejsce jest wolne
+    }
+    draw() {
+        this.div.classList.add("pawn");
+        if(this.color==Color.BLACK){
+            this.div.classList.add("pawn-black");
+        }
+        if(this.color==Color.WHITE){
+            this.div.classList.add("pawn-white");
+        }
+
+        let tile = locate(this);
+        tile.appendChild(this.div);
+    }
+    showLegalMoves(offset) {
+        locate(this, offset).classList.add("tile-selected")
+    }
+    clearSel(offset) {
+        locate(this, offset).classList.remove("tile-selected");
+    }
 }
+
+
 
 let tiles = new Array(board.length);
 for (let i = 0; i < tiles.length; i++) {
@@ -67,9 +127,6 @@ function drawBoard ()
     board.forEach((row, i) => {
         [...row].forEach((tile, j) => {
             let type = tileTypeMap.get(tile);
-
-            // iteratory w foreach() zaczynają się od 0, a elementy w gridzie od 1
-            // dlatego trzeba dodać 1 //zerzniete z magicznych bloczkow
             putTile(j+1, i+1, type);
         })
     })
@@ -77,46 +134,9 @@ function drawBoard ()
 
 }
 
-function drawPawn(pawn) {
-    let side = pawn.side;
-    let pos = pawn.pos;
-    let color = pawn.color;
-    let div = pawn.div;
-
-
-    div.classList.add("pawn");
-    if(color==Color.BLACK){
-        div.classList.add("pawn-black");
-    }
-    if(color==Color.WHITE){
-        div.classList.add("pawn-white");
-    }
-    
-
-    let row, col;
-
-    if (side == Side.US) {
-        col = 1;
-    } else if (side == Side.THEM) {
-        col = 3;
-    }
-
-    if (pos <= 4) {
-        row = 5-pos;
-    } else if (pos <= 12) {
-        row = pos-4;
-        col = 2;
-    } else {
-        row = 13-pos + 8;
-    }
-
-    tiles[col-1][row-1].appendChild(div);
-
-}
-
 function drawPawns(stack) {
     for (let i=0; i<stack.length; i++) {
-        drawPawn(stack[i]);
+        stack[i].draw();
     }
 }
 
@@ -141,14 +161,7 @@ async function init(){
 
     drawPawns(usPawns);
     drawPawns(themPawns);
-
-    for (let i=0; i<15; i++) {
-        themPawns[1].move(1);
-        await sleep(500);
-        usPawns[2].move(1);
-        await sleep(500);
-
-    }
+    usPawns[1].move(2);
 }
 
 init();

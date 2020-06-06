@@ -88,6 +88,12 @@ body
 }
 
 
+.tile-selected
+{
+    filter: hue-rotate(-10deg) brightness(1.4) saturate(1.4);
+}
+
+
 
 .pawn
 {
