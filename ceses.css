@@ -100,12 +100,12 @@ body
 
 .pawn-white
 {
-    background: url('./resources/white_pawn_5.png');
+    background: url('./resources/white_pawn.png');
 }
 
 .pawn-black
 {
-    background: url('./resources/black_pawn_5.png');
+    background: url('./resources/black_pawn.png');
 }
 
 
