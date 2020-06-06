@@ -52,11 +52,12 @@ function locate (pawn, offset = 0) {
 }
 
 class Pawn {
-    constructor(color,side){
+    constructor(color,side,n){
         this.color=color;
         this.side=side;
         this.pos=0;
         this.div = document.createElement("div");
+        this.div.dataset.n = n;
         this.div.addEventListener("click", () => {
             this.clearSel(tilesToMove);
             this.move(tilesToMove);
@@ -74,10 +75,21 @@ class Pawn {
         
     }
     move(n) {
-        
-        this.pos+=n;
-        this.draw();
+        if(this.canMove(tilesToMove)){
+            this.pos+=n;
+            this.draw();
+        }
+    
         //sprawdz czy miejsce jest wolne
+    }
+    canMove(offset){
+        let tile = locate(this, offset);
+        let child = tile.firstChild;
+        console.log(child,tile);
+        if(child==undefined){
+            return true;
+        }
+        return true;
     }
     draw() {
         this.div.classList.add("pawn");
@@ -92,7 +104,10 @@ class Pawn {
         tile.appendChild(this.div);
     }
     showLegalMoves(offset) {
-        locate(this, offset).classList.add("tile-selected")
+        if(!this.canMove(tilesToMove)){
+            return;
+        }
+        locate(this, offset).classList.add("tile-selected");
     }
     clearSel(offset) {
         locate(this, offset).classList.remove("tile-selected");
@@ -155,13 +170,14 @@ async function init(){
     let themPawns=new Array();
 
     for(let i=0;i<7;i++){
-        usPawns.push(new Pawn(Color.WHITE,Side.US));
-        themPawns.push(new Pawn(Color.BLACK,Side.THEM));
+        usPawns.push(new Pawn(Color.WHITE,Side.US,i));
+        themPawns.push(new Pawn(Color.BLACK,Side.THEM,i));
     }
 
     drawPawns(usPawns);
     drawPawns(themPawns);
     usPawns[1].move(2);
+    console.log(usPawns[1]);
 }
 
 init();
