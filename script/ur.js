@@ -24,8 +24,9 @@ const Board = [
 const Color = { BLACK: 1, WHITE: 2 };
 const Side = { US: 0, THEM: 1 };
 
-
 const MaxPos = 15;
+const NPawns = 7;
+
 let TilesToMove = 3;
 
 function locateTile(pawn, offset = 0) {
@@ -54,7 +55,7 @@ function locateTile(pawn, offset = 0) {
 
 
 Object.defineProperty(HTMLElement.prototype, 'getPawn', {
-    value: function() { return Pawns[this.dataset.side][this.dataset.nth]; }
+    value: function () { return Pawns[this.dataset.side][this.dataset.nth]; }
 })
 
 
@@ -74,7 +75,9 @@ class Pawn {
             let otherPawnsDiv = locateTile(this, TilesToMove).firstChild;
             if (otherPawnsDiv != null) {
                 var otherPawn = otherPawnsDiv.getPawn();
-                if (otherPawn.side == this.side) {
+                if (otherPawn.side == this.side &&
+                    (this.pos + TilesToMove) < MaxPos
+                ) {
                     return;
                 } else if (otherPawn.side != this.side) {
                     otherPawn.moveBack();
@@ -183,10 +186,10 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let Pawns = [ [], [] ];
+let Pawns = [[], []];
 async function init() {
     drawBoard();
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < NPawns; i++) {
         Pawns[0].push(new Pawn(Color.WHITE, Side.US, i));
         Pawns[1].push(new Pawn(Color.BLACK, Side.THEM, i));
     }
