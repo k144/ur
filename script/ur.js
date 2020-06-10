@@ -1,6 +1,6 @@
-let boardDiv = document.getElementById("board");
+const BoardDiv = document.getElementById("board");
 
-let tileTypeMap = new Map([
+const TileTypeMap = new Map([
     ['*', "rosette"],
     ['H', "gate"],
     ['O', "temple"],
@@ -10,7 +10,7 @@ let tileTypeMap = new Map([
     [' ', "empty"],
 ]);
 
-let board = [
+const Board = [
     '*H*',
     'O.O',
     '.+.',
@@ -21,13 +21,14 @@ let board = [
     'X.X',
 ];
 
-let tilesToMove = 2;
+const Color = { BLACK: 1, WHITE: 2 };
+const Side = { US: 0, THEM: 1 };
 
 
-let Color = {BLACK:1, WHITE:2};
-let Side = {US:1, THEM:2};
+const MaxPos = 15;
+let TilesToMove = 3;
 
-function locate (pawn, offset = 0) {
+function locateTile(pawn, offset = 0) {
     let side = pawn.side;
     let pos = pawn.pos + offset;
 
@@ -40,89 +41,106 @@ function locate (pawn, offset = 0) {
     }
 
     if (pos <= 4) {
-        row = 5-pos;
+        row = 5 - pos;
     } else if (pos <= 12) {
-        row = pos-4;
+        row = pos - 4;
         col = 2;
     } else {
-        row = 13-pos + 8;
+        row = 13 - pos + 8;
     }
-    return tiles[col-1][row-1];
+    return tiles[col - 1][row - 1];
 
 }
 
+
+Object.defineProperty(HTMLElement.prototype, 'getPawn', {
+    value: function() { return Pawns[this.dataset.side][this.dataset.nth]; }
+})
+
+
 class Pawn {
-    constructor(color,side,n){
-        this.color=color;
-        this.side=side;
-        this.pos=0;
+    constructor(color, side, nth) {
+        this.color = color;
+        this.side = side;
+        this.pos = 0;
         this.div = document.createElement("div");
-        this.div.dataset.n = n;
+        this.div.dataset.nth = nth;
+        this.div.dataset.side = side;
         this.div.addEventListener("click", () => {
-            this.clearSel(tilesToMove);
-            this.move(tilesToMove);
-            tilesToMove = Math.floor((Math.random() * 4) + 1);
+            this.clearSel(TilesToMove);
+            if ((this.pos + TilesToMove) > MaxPos) {
+                return;
+            }
+            let otherPawnsDiv = locateTile(this, TilesToMove).firstChild;
+            if (otherPawnsDiv != null) {
+                var otherPawn = otherPawnsDiv.getPawn();
+                if (otherPawn.side == this.side) {
+                    return;
+                } else if (otherPawn.side != this.side) {
+                    otherPawn.moveBack();
+                }
+            }
+            this.move(TilesToMove);
         }
         );
         this.div.addEventListener("mouseover", () => {
-            this.showLegalMoves(tilesToMove);
+            this.showLegalMoves(TilesToMove);
         }
         );
         this.div.addEventListener("mouseleave", () => {
-            this.clearSel(tilesToMove);
+            this.clearSel(TilesToMove);
         }
         );
-        
+
     }
     move(n) {
-        if(this.canMove(tilesToMove)){
-            this.pos+=n;
-            this.draw();
-        }
-    
+        this.pos += n;
+        this.draw();
         //sprawdz czy miejsce jest wolne
     }
-    canMove(offset){
-        let tile = locate(this, offset);
+    moveBack() {
+        this.move(-(this.pos));
+        console.log("Zbite");
+    }
+    canMove(offset) {
+        let tile = locateTile(this, offset);
         let child = tile.firstChild;
-        console.log(child,tile);
-        if(child==undefined){
+        if (child == undefined) {
             return true;
         }
         return true;
     }
     draw() {
         this.div.classList.add("pawn");
-        if(this.color==Color.BLACK){
+        if (this.color == Color.BLACK) {
             this.div.classList.add("pawn-black");
         }
-        if(this.color==Color.WHITE){
+        if (this.color == Color.WHITE) {
             this.div.classList.add("pawn-white");
         }
 
-        let tile = locate(this);
+        let tile = locateTile(this);
         tile.appendChild(this.div);
     }
     showLegalMoves(offset) {
-        if(!this.canMove(tilesToMove)){
+        if (!this.canMove(TilesToMove)) {
             return;
         }
-        locate(this, offset).classList.add("tile-selected");
+        locateTile(this, offset).classList.add("tile-selected");
     }
     clearSel(offset) {
-        locate(this, offset).classList.remove("tile-selected");
+        locateTile(this, offset).classList.remove("tile-selected");
     }
 }
 
 
 
-let tiles = new Array(board.length);
+let tiles = new Array(Board.length);
 for (let i = 0; i < tiles.length; i++) {
     tiles[i] = new Array(3)
 }
 
-function putTile (x, y, type)
-{
+function putTile(x, y, type) {
     let tile = document.createElement("div");
 
     tile.className = "tile";
@@ -133,30 +151,31 @@ function putTile (x, y, type)
     tile.style.gridColumn = x + "/ span 1";
     tile.style.gridRow = y + "/ span 1";
 
-    boardDiv.append(tile);
-    tiles[x-1][y-1] = tile;
+    BoardDiv.append(tile);
+    tiles[x - 1][y - 1] = tile;
 }
 
-function drawBoard ()
-{
-    board.forEach((row, i) => {
+function drawBoard() {
+    Board.forEach((row, i) => {
         [...row].forEach((tile, j) => {
-            let type = tileTypeMap.get(tile);
-            putTile(j+1, i+1, type);
+            let type = TileTypeMap.get(tile);
+            putTile(j + 1, i + 1, type);
         })
     })
 
 
 }
 
-function drawPawns(stack) {
-    for (let i=0; i<stack.length; i++) {
-        stack[i].draw();
+function drawPawns() {
+    for (let i = 0; i < Pawns.length; i++) {
+        for (let j = 0; j < Pawns[i].length; j++) {
+            Pawns[i][j].draw();
+        }
     }
 }
 
 //function dices(){
-    //kostki, losowanie
+//kostki, losowanie
 //}
 
 
@@ -164,20 +183,15 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function init(){
+let Pawns = [ [], [] ];
+async function init() {
     drawBoard();
-    let usPawns=new Array();
-    let themPawns=new Array();
-
-    for(let i=0;i<7;i++){
-        usPawns.push(new Pawn(Color.WHITE,Side.US,i));
-        themPawns.push(new Pawn(Color.BLACK,Side.THEM,i));
+    for (let i = 0; i < 7; i++) {
+        Pawns[0].push(new Pawn(Color.WHITE, Side.US, i));
+        Pawns[1].push(new Pawn(Color.BLACK, Side.THEM, i));
     }
 
-    drawPawns(usPawns);
-    drawPawns(themPawns);
-    usPawns[1].move(2);
-    console.log(usPawns[1]);
+    drawPawns();
 }
 
 init();
