@@ -177,28 +177,35 @@ function drawPawns() {
     }
 }
 
-class Dice{
+class Dice {
     //kostki, losowanie
-    constructor(){
-        this.orientation=0;
-        this.drawn=false;
-        this.div=document.createElement("div");
-        this.div.className="dice";
+    constructor() {
+        this.orientation = 0;
+        this.drawn = false;
+        this.div = document.createElement("div");
+        this.div.className = "dice";
         document.getElementById("dices").appendChild(this.div);
         this.updateImage();
     }
-    draw(){
-        this.orientation=Math.floor(Math.random()*(5+1));
-        this.drawn=this.orientation<3;
-        console.log(this.updateImage());
+    draw() {
+        this.orientation = Math.floor(Math.random() * (5 + 1));
+        this.drawn = this.orientation < 3;
+        this.updateImage();
     }
-    updateImage(){
-        this.div.style.backgroundImage=`url('./resources/dice_${+this.drawn}_${this.orientation%3}.png');`;
-        console.log(this.div);
+    updateImage() {
+        let style = `url('./resources/dice_${+this.drawn}_${this.orientation % 3}.png')`;
+        this.div.style.backgroundImage = style;
     }
 
 }
 
+function roll() {
+    TilesToMove = 0;
+    for (let dice of dices) {
+        dice.draw();
+        TilesToMove += dice.drawn;
+    }
+}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -214,5 +221,17 @@ async function init() {
 
     drawPawns();
 }
-let test=new Dice();
+
+
+let dices = [];
+for (let i = 0; i < 4; i++) {
+    dices.push(new Dice());
+}
+
+roll()
+
+let dicesDiv = document.getElementById('dices')
+dicesDiv.addEventListener("click", () => roll());
+
+
 init();
