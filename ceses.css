@@ -38,6 +38,12 @@ body
     grid-template-rows: repeat(8, 1em);
 }
 
+.dice
+{
+    background-size: cover;
+    height: 64px;
+    width: 64px;
+}
 .tile
 {
     background-size: cover !important;

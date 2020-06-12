@@ -177,9 +177,27 @@ function drawPawns() {
     }
 }
 
-//function dices(){
-//kostki, losowanie
-//}
+class Dice{
+    //kostki, losowanie
+    constructor(){
+        this.orientation=0;
+        this.drawn=false;
+        this.div=document.createElement("div");
+        this.div.className="dice";
+        document.getElementById("dices").appendChild(this.div);
+        this.updateImage();
+    }
+    draw(){
+        this.orientation=Math.floor(Math.random()*(5+1));
+        this.drawn=this.orientation<3;
+        console.log(this.updateImage());
+    }
+    updateImage(){
+        this.div.style.backgroundImage=`url('./resources/dice_${+this.drawn}_${this.orientation%3}.png');`;
+        console.log(this.div);
+    }
+
+}
 
 
 function sleep(ms) {
@@ -196,5 +214,5 @@ async function init() {
 
     drawPawns();
 }
-
+let test=new Dice();
 init();
