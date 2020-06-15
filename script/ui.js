@@ -53,9 +53,9 @@ function drawBoard() {
 
 function drawPawns() {
     for (let i = 0; i < NPawns; i++) {
-        Pawns[0].push(new Pawn(Color.WHITE, Side.US, i));
+        Pawns[0].push(new Pawn(Color.WHITE, Side.LEFT, i));
         Pawns[0][i].draw();
-        Pawns[1].push(new Pawn(Color.BLACK, Side.THEM, i));
+        Pawns[1].push(new Pawn(Color.BLACK, Side.RIGHT, i));
         Pawns[1][i].draw();
     }
 }
@@ -82,5 +82,3 @@ function drawDices() {
     }
 
 }
-
-DicesDiv.addEventListener("click", () => roll());
