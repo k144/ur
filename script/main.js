@@ -6,8 +6,10 @@ async function init() {
     drawDices();
 
     while (true) {
-        await turn(Side.LEFT);
-        await turn(Side.RIGHT);
+        let result = await turn().next()
+        if (result.value == "end") {
+            break
+        }
     }
 }
 

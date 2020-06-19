@@ -35,6 +35,12 @@ function putTile(x, y, type) {
         tile.classList.add(`tile-${type}`);
     }
 
+    if (type == "rosette") {
+        tile.dataset.extraRoll = true;
+    } else {
+        tile.dataset.extraRoll = false;
+    }
+
     tile.style.gridColumn = x + "/ span 1";
     tile.style.gridRow = y + "/ span 1";
 

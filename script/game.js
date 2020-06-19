@@ -1,9 +1,7 @@
 const MaxPos = 15;
 
-function locateTile(pawn, offset = 0) {
-    let side = pawn.side;
-    let pos = pawn.pos + offset;
 
+function locateTile(pos, side) {
     let row, col;
 
     const turn1 = 4;
@@ -30,7 +28,7 @@ function locateTile(pawn, offset = 0) {
 
 
 function getPawn(div) {
-    if (!div || !div.className ||!div.className.includes("pawn")) {
+    if (!div || !div.className || !div.className.includes("pawn")) {
         return undefined;
     }
     return Pawns[div.dataset.side][div.dataset.nth];
@@ -61,7 +59,7 @@ class Pawn {
         if (dest == MaxPos) {
             return true;
         }
-        let tile = locateTile(this, TilesToMove);
+        let tile = locateTile(this.pos + TilesToMove, this.side);
         let child = tile ? getPawn(tile.firstChild) : null;
         if (child == undefined) {
             return true;
@@ -79,17 +77,17 @@ class Pawn {
             this.div.classList.add("pawn-white");
         }
 
-        let tile = locateTile(this);
+        let tile = locateTile(this.pos, this.side);
         tile.appendChild(this.div);
     }
     showLegalMove(offset) {
         if (!this.canMove()) {
             return;
         }
-        locateTile(this, offset).classList.add("tile-selected");
+        locateTile(this.pos + offset, this.side).classList.add("tile-selected");
     }
     clearSel(offset) {
-        locateTile(this, offset).classList.remove("tile-selected");
+        locateTile(this.pos + offset, this.side).classList.remove("tile-selected");
     }
     set isHighlighted(val) {
         if (val) {
@@ -124,18 +122,10 @@ class Dice {
 
 }
 
-function roll() {
-    TilesToMove = 0;
-    for (let dice of Dices) {
-        dice.roll();
-        TilesToMove += dice.drawn;
-    }
-}
-
 
 function pawnClick(pawn) {
     pawn.clearSel(TilesToMove);
-    let otherPawnsDiv = locateTile(pawn, TilesToMove).firstChild;
+    let otherPawnsDiv = locateTile(pawn.pos + TilesToMove, pawn.side).firstChild;
     if (otherPawnsDiv != null && pawn.pos + TilesToMove != MaxPos) {
         var otherPawn = getPawn(otherPawnsDiv);
         otherPawn.moveBack();
@@ -167,40 +157,89 @@ async function getClicked() {
 }
 */
 
-async function getSelectedPawn(side) {
+async function getElm() {
     return new Promise((resolve) => {
         document.addEventListener("click", (evt) => {
             let x = evt.clientX;
             let y = evt.clientY;
-            let pawn = getPawn(document.elementFromPoint(x,y))
-            if (!pawn || !pawn.canMove || pawn.side != side) {
-                resolve(undefined);
-            }
-            resolve(pawn);
-        }, {once: true})
+            let elm = document.elementFromPoint(x, y);
+            resolve(elm);
+        }, { once: true })
     })
 }
 
-async function turn(side) {
-    roll();
+async function roll() {
+    TilesToMove = 0;
 
-    //freezuje sie jak nie ma wyboru, na dole w petli zobaczyć czy chociaż 1 raz canMove() == true
-
-    for (p of Pawns[side]) {
-        if (!p.canMove()) {
-            continue;
+    DicesDiv.classList.add("highlighted");
+    while (true) {
+        let elm = await getElm();
+        if (elm.className === "dice") {
+            break;
         }
-        p.isHighlighted = true;
-        p.div.onmouseover = pawnMouseover;
-        p.div.onmouseleave = pawnMouseLeave;
     }
 
-    let pawn;
-    while (pawn == undefined) {
-        pawn = await getSelectedPawn(side);
+    for (let dice of Dices) {
+        dice.roll();
+        TilesToMove += dice.drawn;
+    }
+    DicesDiv.classList.remove("highlighted");
+}
+
+async function getSelectedPawn(side) {
+    let pawn = getPawn(await getElm());
+    if (!pawn || !pawn.canMove || pawn.side != side) {
+        return undefined;
+    }
+    return pawn;
+}
+
+
+
+let side = Side.LEFT;
+async function* turn() {
+    if (side == Side.LEFT) {
+        side = Side.RIGHT;
+    } else {
+        side = Side.LEFT;
     }
 
-    pawnClick(pawn);
-    clearPawns(side);
+    let extraRoll = false;
+    do {
+        await roll();
+        if (TilesToMove == 0) {
+            return;
+        }
+        let nMovable = 0;
+        for (p of Pawns[side]) {
+            if (!p.canMove()) {
+                continue;
+            }
+            nMovable++;
+            p.isHighlighted = true;
+            p.div.onmouseover = pawnMouseover;
+            p.div.onmouseleave = pawnMouseLeave;
+        }
+
+        if (nMovable <= 0) {
+            return
+        }
+
+        let pawn;
+        while (pawn == undefined) {
+            pawn = await getSelectedPawn(side);
+        }
+        pawnClick(pawn);
+        clearPawns(side);
+
+        let nFinished = locateTile(MaxPos, pawn.side).childElementCount
+        if (nFinished >= NPawns) {
+            console.log("wygrywa: ", side == Side.LEFT ? "lewa strona" : "prawa strona")
+            return "end";
+        }
+        extraRoll = locateTile(pawn.pos, side).dataset.extraRoll;
+        console.log(side, extraRoll);
+
+    } while (extraRoll == "true");
     return;
 }
