@@ -19,5 +19,5 @@
 
 ----
 ## przydatne linki
-[wikipedia](https://en.wikipedia.org/wiki/Royal_Game_of_Ur)
-[filmik-gdzie-irving-gra](https://www.youtube.com/watch?v=WZskjLq040I&t)
+* [wikipedia](https://en.wikipedia.org/wiki/Royal_Game_of_Ur)
+* [filmik-gdzie-irving-gra](https://www.youtube.com/watch?v=WZskjLq040I&t)
