@@ -12,10 +12,32 @@ body
     margin-right: auto;
     text-align: center;
 }
+
+.prompt {
+    display: none;
+    opacity: 0;
+    border: 1px solid black;
+    font-size: 1.6rem;
+    padding: 1em;
+    text-align: center;
+    position: fixed;
+    background: rgb(167, 162, 142);
+    box-shadow: 0 10px 20px 0 #00000044;
+    width: 20em;
+    box-sizing: border-box;
+    left: calc(50% - 10em);
+    top: 20rem;
+    z-index: 100;
+    user-select: none;
+}
+
+
 #game
 {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-flow: column;
     width: 70%;
     border: 1px solid black;
     margin-left: auto;
@@ -29,8 +51,6 @@ body
 
 #board
 {
-    margin-left: auto;
-    margin-right: auto;
     font-size: 4rem;
     display: grid;
     grid-gap: 0.2rem;
@@ -38,6 +58,10 @@ body
     grid-template-rows: repeat(8, 1em);
 }
 
+#dices {
+    display: flex;
+    padding: 2em;
+}
 
 .dice
 {

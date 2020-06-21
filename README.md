@@ -1,11 +1,13 @@
 # Królewska gra z Ur (The royal game of Ur)
 ----
 ## o co cho?
->Królewska gra z Ur to bodaj najstarsza (narazie odkryta, której zasady są nam znane) gra planszowa na świecie znaleziona w wykopaliskach archeologicznych Charlesa Woolleya w grobowcach w starożytnym mieście Ur. Przenosimy ją za pomocą narzędzi informatycznych do sieci internetowej, tak aby każdy mógł w nią zagrać. A zwłaszcza my na nudnych zajęciach w szkole.
+
+Królewska gra z Ur to bodaj najstarsza (narazie odkryta, której zasady są nam znane) gra planszowa na świecie znaleziona w wykopaliskach archeologicznych Charlesa Woolleya w grobowcach w starożytnym mieście Ur. Przenosimy ją za pomocą narzędzi informatycznych do sieci internetowej, tak aby każdy mógł w nią zagrać. A zwłaszcza my na nudnych zajęciach w szkole.
 
 ----
 ## wersja Irvinga Finkela
->Przedstawiona przez nas gra opiera się na wersji odczytanej z glinianej instrukcji przez Irvinga Finkela z British Museum (kiedy zwrócicie eksponaty he?), która jest prosta dla niedzielnych graczy. Istnieje też wersja Dimiriego Skiryuka, gdzie trasa jest dłuższa oraz wymaga od gracza większej strategii, w niedalekiej przyszłości też będzię można ograć ją na naszej stronie, nie tylko ze znajomymi, graczami on-line, ale również z AI.
+
+Przedstawiona przez nas gra opiera się na wersji odczytanej z glinianej instrukcji przez Irvinga Finkela z British Museum (kiedy zwrócicie eksponaty he?), która jest prosta dla niedzielnych graczy. Istnieje też wersja Dimiriego Skiryuka, gdzie trasa jest dłuższa oraz wymaga od gracza większej strategii, w niedalekiej przyszłości też będzię można ograć ją na naszej stronie, nie tylko ze znajomymi, graczami on-line, ale również z AI.
 
 ----
 ## zasady

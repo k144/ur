@@ -88,3 +88,31 @@ function drawDices() {
     }
 
 }
+
+async function displayPrompt(message) {
+    const transition = 200;
+    const duration = 2*1000;
+
+    let promptElm = document.createElement("div");
+    document.getElementById("game").append(promptElm);
+    promptElm.className = "prompt";
+    promptElm.style.transition = `all ${transition}ms`;
+    promptElm.onclick = remove;
+
+    async function remove() {
+        promptElm.style.opacity = 0;
+        promptElm.style.display = "block";
+        await sleep(transition);
+        promptElm.parentNode.removeChild(promptElm);
+    }
+
+
+    promptElm.innerHTML = message;
+    promptElm.style.display = "block";
+    promptElm.style.opacity = 0;
+    await sleep(transition);
+    promptElm.style.opacity = 1;
+    await sleep(duration);
+    remove();
+    return;
+}
