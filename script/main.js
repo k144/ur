@@ -1,8 +1,11 @@
 async function init() {
+    if (Config.nPawns < 1) {
+        resetDefaults();
+    }
+
     drawBoard();
     stylePawnStack();
     drawPawns();
-
     drawDices();
 
     while (true) {

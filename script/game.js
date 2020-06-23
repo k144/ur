@@ -171,19 +171,21 @@ async function getElm() {
 async function roll() {
     TilesToMove = 0;
 
-    DicesDiv.classList.add("highlighted");
-    while (true) {
-        let elm = await getElm();
-        if (elm.className === "dice") {
-            break;
+    if (Config.quickMode == "false") {
+        DicesDiv.classList.add("highlighted");
+        while (true) {
+            let elm = await getElm();
+            if (elm.className === "dice") {
+                break;
+            }
         }
+        DicesDiv.classList.remove("highlighted");
     }
 
     for (let dice of Dices) {
         dice.roll();
         TilesToMove += dice.drawn;
     }
-    DicesDiv.classList.remove("highlighted");
 }
 
 async function getSelectedPawn(side) {
@@ -233,7 +235,7 @@ async function* turn() {
         clearPawns(side);
 
         let nFinished = locateTile(MaxPos, pawn.side).childElementCount
-        if (nFinished >= NPawns) {
+        if (nFinished >= Config.nPawns) {
             console.log("wygrywa: ", side == Side.LEFT ? "lewa strona" : "prawa strona")
             return "end";
         }

@@ -58,7 +58,7 @@ function drawBoard() {
 }
 
 function drawPawns() {
-    for (let i = 0; i < NPawns; i++) {
+    for (let i = 0; i < Config.nPawns; i++) {
         Pawns[0].push(new Pawn(Color.WHITE, Side.LEFT, i));
         Pawns[0][i].draw();
         Pawns[1].push(new Pawn(Color.BLACK, Side.RIGHT, i));
@@ -70,7 +70,7 @@ function stylePawnStack() {
     let style = document.createElement('style');
     style.type = 'text/css';
     let distance = 4;
-    for (let i = 1; i < NPawns; i++) {
+    for (let i = 1; i < Config.nPawns; i++) {
         style.innerHTML +=
         `
         .tile .pawn:nth-child(${i+1}) {
