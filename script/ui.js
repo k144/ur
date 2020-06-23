@@ -58,7 +58,7 @@ function drawBoard() {
 }
 
 function drawPawns() {
-    for (let i = 0; i < Config.nPawns; i++) {
+    for (let i = 0; i < NPawns; i++) {
         Pawns[0].push(new Pawn(Color.WHITE, Side.LEFT, i));
         Pawns[0][i].draw();
         Pawns[1].push(new Pawn(Color.BLACK, Side.RIGHT, i));
@@ -70,7 +70,7 @@ function stylePawnStack() {
     let style = document.createElement('style');
     style.type = 'text/css';
     let distance = 4;
-    for (let i = 1; i < Config.nPawns; i++) {
+    for (let i = 1; i < NPawns; i++) {
         style.innerHTML +=
         `
         .tile .pawn:nth-child(${i+1}) {
@@ -95,20 +95,22 @@ async function displayInfo(message) {
 
     let infoElm = document.createElement("div");
     document.getElementById("game").append(infoElm);
+    let span = document.createElement("span");
+    infoElm.append(span);
     infoElm.className = "info";
     infoElm.style.transition = `all ${transition}ms`;
     infoElm.onclick = remove;
 
     async function remove() {
         infoElm.style.opacity = 0;
-        infoElm.style.display = "block";
+        infoElm.style.display = "flex";
         await sleep(transition);
         infoElm.parentNode.removeChild(infoElm);
     }
 
 
-    infoElm.innerHTML = message;
-    infoElm.style.display = "block";
+    span.innerHTML = message;
+    infoElm.style.display = "flex";
     infoElm.style.opacity = 0;
     await sleep(transition);
     infoElm.style.opacity = 1;

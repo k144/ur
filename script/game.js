@@ -173,7 +173,7 @@ async function getElm() {
 async function roll() {
     TilesToMove = 0;
 
-    if (Config.quickMode == false) {
+    if (Config.quickMode == "false") {
         DicesDiv.classList.add("highlighted");
         while (true) {
             let elm = await getElm();
@@ -187,6 +187,9 @@ async function roll() {
     for (let dice of Dices) {
         dice.roll();
         TilesToMove += dice.drawn;
+    }
+    if (TilesToMove <= 0) {
+        displayInfo("wylosowano 0, szczęścia następnym razem");
     }
 }
 
@@ -213,10 +216,8 @@ async function* turn() {
     let extraRoll = false;
     do {
         await roll();
-        if (TilesToMove == 0) {
-            displayInfo("wylosowano 0, szczęścia następnym razem");
-            return;
-        }
+        if (TilesToMove <= 0) { return };
+
         let nMovable = 0;
         for (p of Pawns[side]) {
             if (!p.canMove()) {
@@ -238,7 +239,7 @@ async function* turn() {
         clearPawns(side);
 
         let nFinished = locateTile(MaxPos, pawn.side).childElementCount
-        if (nFinished >= Config.nPawns) {
+        if (nFinished >= NPawns) {
             displayInfo("wygrywa: ", side == Side.LEFT ? "lewa strona" : "prawa strona")
             return "end";
         }

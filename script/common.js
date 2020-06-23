@@ -3,7 +3,8 @@ let Dices = [];
 
 let TilesToMove = 0;
 
-let Config = {}
+const NPawns = Config.nPawns;
+// Config = {} zdeklarowany w pliku config.js
 
 const Color = { BLACK: 1, WHITE: 2 };
 const Side = { LEFT: 0, RIGHT: 1 };

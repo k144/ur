@@ -3,6 +3,8 @@ const Defaults = new Map ([
     ["nPawns", 7],
 ]);
 
+// zmienić na klasę
+let Config = {}
 
 
 function setDefaults() {
@@ -28,8 +30,5 @@ Config.set = function (key, value) {
     Config[key] = value;
 }
 
-Config.set("quickMode", true)
-
 //resetDefaults();
-
-
+//Config.set("quickMode", true);

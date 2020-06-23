@@ -15,18 +15,20 @@ body
 
 .info {
     display: none;
+    justify-content: center;
+    align-items: center;
     opacity: 0;
     border: 1px solid black;
     font-size: 1.6rem;
+    height: 5em;
     padding: 1em;
-    text-align: center;
     position: fixed;
     background: rgb(167, 162, 142);
     box-shadow: 0 10px 20px 0 #00000044;
     width: 20em;
     box-sizing: border-box;
-    left: calc(50% - 10em);
-    top: 20rem;
+    left: 2rem;
+    top: 2rem;
     z-index: 100;
     user-select: none;
 }
