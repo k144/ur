@@ -3,7 +3,7 @@ let Dices = [];
 
 let TilesToMove = 0;
 
-const Config = {}
+let Config = {}
 
 const Color = { BLACK: 1, WHITE: 2 };
 const Side = { LEFT: 0, RIGHT: 1 };

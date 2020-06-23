@@ -1,6 +1,6 @@
 const Defaults = new Map ([
     ["quickMode", false],
-    ["nPawns", 5],
+    ["nPawns", 7],
 ]);
 
 
@@ -23,9 +23,12 @@ function resetDefaults() {
 
 setDefaults();
 
+Config.set = function (key, value) {
+    localStorage.setItem(key, value);
+    Config[key] = value;
+}
 
-Config.quickMode = true;
-
+Config.set("quickMode", true)
 
 //resetDefaults();
 

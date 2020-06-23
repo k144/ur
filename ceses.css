@@ -13,7 +13,7 @@ body
     text-align: center;
 }
 
-.prompt {
+.info {
     display: none;
     opacity: 0;
     border: 1px solid black;

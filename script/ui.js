@@ -89,29 +89,29 @@ function drawDices() {
 
 }
 
-async function displayPrompt(message) {
+async function displayInfo(message) {
     const transition = 200;
     const duration = 2*1000;
 
-    let promptElm = document.createElement("div");
-    document.getElementById("game").append(promptElm);
-    promptElm.className = "prompt";
-    promptElm.style.transition = `all ${transition}ms`;
-    promptElm.onclick = remove;
+    let infoElm = document.createElement("div");
+    document.getElementById("game").append(infoElm);
+    infoElm.className = "info";
+    infoElm.style.transition = `all ${transition}ms`;
+    infoElm.onclick = remove;
 
     async function remove() {
-        promptElm.style.opacity = 0;
-        promptElm.style.display = "block";
+        infoElm.style.opacity = 0;
+        infoElm.style.display = "block";
         await sleep(transition);
-        promptElm.parentNode.removeChild(promptElm);
+        infoElm.parentNode.removeChild(infoElm);
     }
 
 
-    promptElm.innerHTML = message;
-    promptElm.style.display = "block";
-    promptElm.style.opacity = 0;
+    infoElm.innerHTML = message;
+    infoElm.style.display = "block";
+    infoElm.style.opacity = 0;
     await sleep(transition);
-    promptElm.style.opacity = 1;
+    infoElm.style.opacity = 1;
     await sleep(duration);
     remove();
     return;

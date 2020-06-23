@@ -61,9 +61,10 @@ class Pawn {
         }
         let tile = locateTile(this.pos + TilesToMove, this.side);
         let child = tile ? getPawn(tile.firstChild) : null;
+        console.log(tile.dataset, TilesToMove);
         if (child == undefined) {
             return true;
-        } else if (child.color == this.color) {
+        } else if (child.color == this.color || tile.dataset.extraRoll == "true") {
             return false;
         }
         return true;
@@ -124,6 +125,7 @@ class Dice {
 
 
 function pawnClick(pawn) {
+    if (!pawn.canMove()) { return }
     pawn.clearSel(TilesToMove);
     let otherPawnsDiv = locateTile(pawn.pos + TilesToMove, pawn.side).firstChild;
     if (otherPawnsDiv != null && pawn.pos + TilesToMove != MaxPos) {
@@ -171,7 +173,7 @@ async function getElm() {
 async function roll() {
     TilesToMove = 0;
 
-    if (Config.quickMode == "false") {
+    if (Config.quickMode == false) {
         DicesDiv.classList.add("highlighted");
         while (true) {
             let elm = await getElm();
@@ -189,11 +191,13 @@ async function roll() {
 }
 
 async function getSelectedPawn(side) {
-    let pawn = getPawn(await getElm());
-    if (!pawn || !pawn.canMove || pawn.side != side) {
-        return undefined;
+    let pawn;
+    while (true) {
+        pawn = getPawn(await getElm())
+        if (pawn && pawn.side == side && pawn.canMove()) {
+            return pawn;
+        }
     }
-    return pawn;
 }
 
 
@@ -210,6 +214,7 @@ async function* turn() {
     do {
         await roll();
         if (TilesToMove == 0) {
+            displayInfo("wylosowano 0, szczęścia następnym razem");
             return;
         }
         let nMovable = 0;
@@ -224,23 +229,20 @@ async function* turn() {
         }
 
         if (nMovable <= 0) {
+            displayInfo("brak możliwych ruchów");
             return
         }
 
-        let pawn;
-        while (pawn == undefined) {
-            pawn = await getSelectedPawn(side);
-        }
+        let pawn = await getSelectedPawn(side);
         pawnClick(pawn);
         clearPawns(side);
 
         let nFinished = locateTile(MaxPos, pawn.side).childElementCount
         if (nFinished >= Config.nPawns) {
-            console.log("wygrywa: ", side == Side.LEFT ? "lewa strona" : "prawa strona")
+            displayInfo("wygrywa: ", side == Side.LEFT ? "lewa strona" : "prawa strona")
             return "end";
         }
         extraRoll = locateTile(pawn.pos, side).dataset.extraRoll;
-        console.log(side, extraRoll);
 
     } while (extraRoll == "true");
     return;
