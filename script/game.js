@@ -189,7 +189,7 @@ async function roll() {
         TilesToMove += dice.drawn;
     }
     if (TilesToMove <= 0) {
-        displayInfo("wylosowano 0, szczęścia następnym razem");
+        displayInfo("wylosowano 0, spróbuj szczęścia następnym razem");
     }
 }
 
