@@ -111,8 +111,14 @@ class Dice {
         document.getElementById("dices").appendChild(this.div);
         this.updateImage();
     }
-    roll() {
-        this.orientation = Math.floor(Math.random() * (5 + 1));
+    async roll() {
+        let o = rand(0,6);
+        if (o == this.orientation) {
+            this.roll();
+            return;
+        }
+        this.orientation = o;
+        this.div.style.transform = `rotate(${rand(0,360)}deg)`;
         this.drawn = this.orientation < 3;
         this.updateImage();
     }
@@ -184,10 +190,20 @@ async function roll() {
         DicesDiv.classList.remove("highlighted");
     }
 
-    for (let dice of Dices) {
-        dice.roll();
+    await Promise.all(Dices.map(async function (dice) {
+        const speed = Math.random() * 1.6 + 1.45;
+        for (let t = 100; t < 500; t = t * speed + 1) {
+            console.log(t);
+            dice.roll();
+            await sleep(t);
+        }
         TilesToMove += dice.drawn;
-    }
+        return;
+    }));
+    // for (let dice of Dices) {
+    //     await dice.roll();
+    //     TilesToMove += dice.drawn;
+    // }
     if (TilesToMove <= 0) {
         displayInfo("wylosowano 0, spróbuj szczęścia następnym razem");
     }

@@ -90,6 +90,7 @@ function drawDices() {
 }
 
 async function displayInfo(message) {
+    return;
     const transition = 200;
     const duration = 2*1000;
 

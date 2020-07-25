@@ -12,3 +12,7 @@ const Side = { LEFT: 0, RIGHT: 1 };
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function rand(min, max) {
+    return Math.floor((Math.random() * max) + min);
+}
