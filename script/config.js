@@ -1,5 +1,5 @@
 const Defaults = new Map ([
-    ["quickMode", false],
+    ["autoRoll", false],
     ["nPawns", 7],
 ]);
 
@@ -11,6 +11,10 @@ function setDefaults() {
     for (const [key, value] of Defaults) {
         if (localStorage.getItem(key) == null) {
             localStorage.setItem(key, value);
+        }
+        if (typeof(value) == "boolean") {
+            Config[key] = localStorage.getItem(key) == "true";
+            continue;
         }
         Config[key] = localStorage.getItem(key);
     }

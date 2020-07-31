@@ -61,7 +61,6 @@ class Pawn {
         }
         let tile = locateTile(this.pos + TilesToMove, this.side);
         let child = tile ? getPawn(tile.firstChild) : null;
-        console.log(tile.dataset, TilesToMove);
         if (child == undefined) {
             return true;
         } else if (child.color == this.color || tile.dataset.extraRoll == "true") {
@@ -179,7 +178,8 @@ async function getElm() {
 async function roll() {
     TilesToMove = 0;
 
-    if (Config.quickMode == "false") {
+    console.log(Config.autoRoll == false);
+    if (Config.autoRoll == false) {
         DicesDiv.classList.add("highlighted");
         while (true) {
             let elm = await getElm();
@@ -193,7 +193,6 @@ async function roll() {
     await Promise.all(Dices.map(async function (dice) {
         const speed = Math.random() * 1.6 + 1.45;
         for (let t = 100; t < 500; t = t * speed + 1) {
-            console.log(t);
             dice.roll();
             await sleep(t);
         }

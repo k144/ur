@@ -1,4 +1,5 @@
 async function init() {
+    setDefaults();
     if (Config.nPawns < 1) {
         resetDefaults();
     }
