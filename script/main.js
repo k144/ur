@@ -3,6 +3,8 @@ async function init() {
         resetDefaults();
     }
 
+    preloadImgs();
+
     drawBoard();
     stylePawnStack();
     drawPawns();

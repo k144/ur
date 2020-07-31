@@ -86,7 +86,15 @@ function drawDices() {
     for (let i = 0; i < 4; i++) {
         Dices.push(new Dice());
     }
+}
 
+async function preloadImgs() {
+    // Kości
+    for (let i = 0; i < 3; i++) {
+        let [img0, img1] = [new Image(), new Image()];
+        img0.src = `./resources/dice_0_${i}.png`;
+        img1.src = `./resources/dice_1_${i}.png`;
+    }
 }
 
 async function displayInfo(message) {
