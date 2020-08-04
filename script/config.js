@@ -1,10 +1,16 @@
+// zmienić na klasę
+let Config = {
+    version: {
+        number: "0.8.1",
+        name: "Sargon Wielki (pre)",
+        date: "2020.08.04"
+    }
+};
+
 const Defaults = new Map ([
     ["autoRoll", false],
     ["nPawns", 7],
 ]);
-
-// zmienić na klasę
-let Config = {}
 
 
 function setDefaults() {

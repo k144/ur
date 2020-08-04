@@ -127,3 +127,13 @@ async function displayInfo(message) {
     remove();
     return;
 }
+
+function drawVersion() {
+    let elm = document.getElementById("version");
+    let v = Config.version;
+    elm.innerHTML =
+    `wersja ${v.number} - ${v.name}<br>
+    ${v.date}`;
+}
+
+drawVersion();
