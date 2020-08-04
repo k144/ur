@@ -203,9 +203,9 @@ async function roll() {
     //     await dice.roll();
     //     TilesToMove += dice.drawn;
     // }
-    if (TilesToMove <= 0) {
-        displayInfo("wylosowano 0, spróbuj szczęścia następnym razem");
-    }
+    // if (TilesToMove <= 0) {
+    //     displayInfo("wylosowano 0, spróbuj szczęścia następnym razem");
+    // }
 }
 
 async function getSelectedPawn(side) {
@@ -245,7 +245,7 @@ async function* turn() {
         }
 
         if (nMovable <= 0) {
-            displayInfo("brak możliwych ruchów");
+            // displayInfo("brak możliwych ruchów");
             return
         }
 

@@ -98,7 +98,6 @@ async function preloadImgs() {
 }
 
 async function displayInfo(message) {
-    return;
     const transition = 200;
     const duration = 2*1000;
 
