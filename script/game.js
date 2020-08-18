@@ -43,13 +43,77 @@ class Pawn {
         this.div.dataset.nth = nth;
         this.div.dataset.side = side;
     }
-    move(n) {
+    makeGrabable() {
+        if (isTouchDevice) {
+            this.div.ontouchstart = (evt) => this.stickTouch(evt);
+            this.div.ontouchend = () => {
+                document.ontouchmove = null;
+                this.unstick();
+            }
+        } else {
+            this.div.onmousedown = (evt) => this.stickMouse(evt);
+            this.div.onmouseup = () => {
+                document.onmousemove = null;
+                this.unstick();
+            }
+        }
+
+    }
+    stickMouse(passevt) {
+        this.showLegalMove();
+        this.div.classList.add("sticked");
+        let style = this.div.style;
+        let [offX, offY] = [passevt.layerX, passevt.layerY];
+        document.onmousemove = (evt) => {
+            style.position = "fixed";
+            style.left = `${evt.clientX - offX}px`;
+            style.top = `${evt.clientY - offY}px`;
+        }
+
+    }
+    stickTouch(passevt) {
+        this.showLegalMove();
+        this.div.classList.add("sticked");
+        let style = this.div.style;
+        let rect = passevt.target.getBoundingClientRect()
+        let firstTouch = passevt.targetTouches[0];
+        let offX = firstTouch.pageX - rect.left;
+        let offY = firstTouch.pageY - rect.top;
+        // let [offX, offY] = [passevt.layerX, passevt.layerY];
+        document.ontouchmove = (evt) => {
+            style.position = "fixed";
+            let touch = evt.targetTouches[0];
+            style.left = `${touch.screenX - offX}px`;
+            style.top = `${touch.screenY - offY}px`;
+        }
+
+    }
+    unstick() {
+        this.clearSel();
+        let style = this.div.style;
+        style.position = "";
+        style.left = "";
+        style.top = "inherit";
+        this.div.classList.remove("sticked");
+
+    }
+    move() {
+        if (!this.canMove()) { return };
+        this.clearSel();
+        let otherPawnsDiv = locateTile(this.pos + TilesToMove, this.side).firstChild;
+        if (otherPawnsDiv != null && this.pos + TilesToMove != MaxPos) {
+            let otherPawn = getPawn(otherPawnsDiv);
+            otherPawn.moveBack();
+        }
+        this.moveTo(TilesToMove);
+
+    }
+    moveTo(n) {
         this.pos += n;
         this.draw();
-        //sprawdz czy miejsce jest wolne
     }
     moveBack() {
-        this.move(-(this.pos));
+        this.moveTo(-(this.pos));
     }
     canMove() {
         const dest = TilesToMove + this.pos;
@@ -80,14 +144,14 @@ class Pawn {
         let tile = locateTile(this.pos, this.side);
         tile.appendChild(this.div);
     }
-    showLegalMove(offset) {
+    showLegalMove() {
         if (!this.canMove()) {
             return;
         }
-        locateTile(this.pos + offset, this.side).classList.add("tile-selected");
+        locateTile(this.pos + TilesToMove, this.side).classList.add("tile-selected");
     }
-    clearSel(offset) {
-        locateTile(this.pos + offset, this.side).classList.remove("tile-selected");
+    clearSel() {
+        locateTile(this.pos + TilesToMove, this.side).classList.remove("tile-selected");
     }
     set isHighlighted(val) {
         if (val) {
@@ -111,13 +175,13 @@ class Dice {
         this.updateImage();
     }
     async roll() {
-        let o = rand(0,6);
+        let o = rand(0, 6);
         if (o == this.orientation) {
             this.roll();
             return;
         }
         this.orientation = o;
-        this.div.style.transform = `rotate(${rand(0,360)}deg)`;
+        this.div.style.transform = `rotate(${rand(0, 360)}deg)`;
         this.drawn = this.orientation < 3;
         this.updateImage();
     }
@@ -129,34 +193,6 @@ class Dice {
 }
 
 
-function pawnClick(pawn) {
-    if (!pawn.canMove()) { return }
-    pawn.clearSel(TilesToMove);
-    let otherPawnsDiv = locateTile(pawn.pos + TilesToMove, pawn.side).firstChild;
-    if (otherPawnsDiv != null && pawn.pos + TilesToMove != MaxPos) {
-        var otherPawn = getPawn(otherPawnsDiv);
-        otherPawn.moveBack();
-    }
-    pawn.move(TilesToMove);
-}
-
-function pawnMouseover(evt) {
-    let pawn = getPawn(evt.currentTarget);
-    pawn.showLegalMove(TilesToMove);
-}
-
-function pawnMouseLeave(evt) {
-    let pawn = getPawn(evt.currentTarget);
-    pawn.clearSel(TilesToMove);
-}
-
-function clearPawns(side) {
-    for (pawn of Pawns[side]) {
-        pawn.isHighlighted = false;
-        pawn.div.onmouseover = null;
-        pawn.div.onmouseleave = null;
-    }
-}
 
 /*
 async function getClicked() {
@@ -164,9 +200,9 @@ async function getClicked() {
 }
 */
 
-async function getElm() {
+async function getElm(event = "click") {
     return new Promise((resolve) => {
-        document.addEventListener("click", (evt) => {
+        document.addEventListener(event, (evt) => {
             let x = evt.clientX;
             let y = evt.clientY;
             let elm = document.elementFromPoint(x, y);
@@ -178,7 +214,6 @@ async function getElm() {
 async function roll() {
     TilesToMove = 0;
 
-    console.log(Config.autoRoll == false);
     if (Config.autoRoll == false) {
         DicesDiv.classList.add("highlighted");
         while (true) {
@@ -208,13 +243,56 @@ async function roll() {
     // }
 }
 
+function clearPawns(side) {
+
+    let funcs = [
+        "mouseover",
+        "mouseleave",
+        "mousedown",
+        "mouseup",
+        "tochmove",
+        "touchend",
+    ];
+
+    for (let pawn of Pawns[side]) {
+        pawn.isHighlighted = false;
+
+        for (let func of funcs) {
+            pawn.div["on" + func] = null;
+
+        }
+
+    }
+
+}
+
+let MoveFlag = false;
+
+document.addEventListener("mousemove", () => MoveFlag = true);
+document.addEventListener("touchmove", () => MoveFlag = true);
+
 async function getSelectedPawn(side) {
     let pawn;
     while (true) {
-        pawn = getPawn(await getElm())
-        if (pawn && pawn.side == side && pawn.canMove()) {
-            return pawn;
+
+        let downElm = await getElm("mousedown");
+        MoveFlag = false;
+        pawn = getPawn(downElm);
+        if (!pawn || !(pawn.side == side) || !pawn.canMove()) {
+            continue;
         }
+
+        let upElm = await getElm("mouseup")
+            if (   MoveFlag == false
+                || upElm == locateTile(pawn.pos + TilesToMove, pawn.side)
+                || upElm.classList.contains("pawn") && (
+                       upElm.dataset.side != pawn.side
+                    || Pawns[upElm.dataset.side][upElm.dataset.nth].pos == MaxPos
+                )
+            ) {
+                return pawn;
+            }
+
     }
 }
 
@@ -234,14 +312,15 @@ async function* turn() {
         if (TilesToMove <= 0) { return };
 
         let nMovable = 0;
-        for (p of Pawns[side]) {
+        for (let p of Pawns[side]) {
             if (!p.canMove()) {
                 continue;
             }
             nMovable++;
             p.isHighlighted = true;
-            p.div.onmouseover = pawnMouseover;
-            p.div.onmouseleave = pawnMouseLeave;
+            p.div.onmouseover = () => p.showLegalMove();
+            p.div.onmouseleave = () => p.clearSel();
+            p.makeGrabable();
         }
 
         if (nMovable <= 0) {
@@ -250,7 +329,7 @@ async function* turn() {
         }
 
         let pawn = await getSelectedPawn(side);
-        pawnClick(pawn);
+        pawn.move();
         clearPawns(side);
 
         let nFinished = locateTile(MaxPos, pawn.side).childElementCount

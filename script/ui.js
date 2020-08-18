@@ -1,5 +1,6 @@
+const GameDiv  = document.getElementById("game");
 const BoardDiv = document.getElementById("board");
-const DicesDiv = document.getElementById('dices')
+const DicesDiv = document.getElementById('dices');
 
 const TileTypeMap = new Map([
     ['*', "rosette"],
@@ -136,3 +137,18 @@ function drawVersion() {
 }
 
 drawVersion();
+
+function* fullscreen() {
+    let style = document.getElementsByTagName("body")[0].style;
+    while (true) {
+        document.documentElement.requestFullscreen();
+        let offset = GameDiv.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo(offset, 0);
+        style.overflow = "hidden";
+        style.height = "100%";
+        yield;
+        document.documentElement.exitFullscreen();
+        style.overflow = "";
+        style.height = "";
+    }
+}

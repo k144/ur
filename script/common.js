@@ -16,3 +16,29 @@ function sleep(ms) {
 function rand(min, max) {
     return Math.floor((Math.random() * max) + min);
 }
+
+let isTouchDevice = (() => {
+    let prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+    let mq = function (query) {
+        return window.matchMedia(query).matches;
+    }
+    if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+        return true;
+    }
+    var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+    return mq(query);
+})();
+
+function prevent(event) {
+    event.preventDefault();
+}
+
+function disableMobileScroll() {
+      window.addEventListener('touchmove', prevent, false);
+}
+
+function enableMobileScroll() {
+      window.removeEventListener('touchmove', prevent, false);
+}
+
+disableMobileScroll();
