@@ -28,17 +28,3 @@ let isTouchDevice = (() => {
     var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
     return mq(query);
 })();
-
-function prevent(event) {
-    event.preventDefault();
-}
-
-function disableMobileScroll() {
-      window.addEventListener('touchmove', prevent, false);
-}
-
-function enableMobileScroll() {
-      window.removeEventListener('touchmove', prevent, false);
-}
-
-disableMobileScroll();

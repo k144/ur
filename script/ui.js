@@ -1,4 +1,4 @@
-const GameDiv  = document.getElementById("game");
+const GameDiv = document.getElementById("game");
 const BoardDiv = document.getElementById("board");
 const DicesDiv = document.getElementById('dices');
 
@@ -73,8 +73,8 @@ function stylePawnStack() {
     let distance = 4;
     for (let i = 1; i < NPawns; i++) {
         style.innerHTML +=
-        `
-        .tile .pawn:nth-child(${i+1}) {
+            `
+        .tile .pawn:nth-child(${i + 1}) {
             position: absolute;
             bottom: ${distance * i}px;
         }
@@ -100,7 +100,7 @@ async function preloadImgs() {
 
 async function displayInfo(message) {
     const transition = 200;
-    const duration = 2*1000;
+    const duration = 2 * 1000;
 
     let infoElm = document.createElement("div");
     document.getElementById("game").append(infoElm);
@@ -133,22 +133,36 @@ function drawVersion() {
     let v = Config.version;
     elm.innerHTML =
     `wersja ${v.number} - ${v.name}<br>
-    ${v.date}`;
+    wydana w dniu ${v.date}`;
 }
 
-drawVersion();
+function drawButtons() {
 
-function* fullscreen() {
-    let style = document.getElementsByTagName("body")[0].style;
-    while (true) {
-        document.documentElement.requestFullscreen();
-        let offset = GameDiv.getBoundingClientRect().top + window.pageYOffset;
-        window.scrollTo(offset, 0);
-        style.overflow = "hidden";
-        style.height = "100%";
-        yield;
-        document.documentElement.exitFullscreen();
-        style.overflow = "";
-        style.height = "";
+    if (isTouchDevice) {
+
+        let fullscreenButton = document.createElement("span");
+        fullscreenButton.id = "fullscreen-icon"
+        fullscreenButton.className = "icon fullscreen"
+
+        fullscreenButton.onclick = (evt) => {
+            evt.target.classList.toggle("on");
+            GameDiv.classList.toggle("fullscreen");
+            if (document.fullscreen) {
+                let funcs = ["exit", "mozCancel", "webkitExit", "msExit"];
+                for (const func of funcs) {
+                    if (document[func + "Fullscreen"]) {
+                        document[func + "Fullscreen"]();
+                        break;
+                    }
+                }
+            } else {
+                GameDiv.requestFullscreen();
+            }
+        }
+
+        GameDiv.appendChild(fullscreenButton);
+
     }
+
 }
+

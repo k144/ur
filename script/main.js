@@ -3,6 +3,9 @@ async function init() {
     if (Config.nPawns < 1) {
         resetDefaults();
     }
+    drawVersion();
+
+    drawButtons();
 
     preloadImgs();
 
@@ -12,9 +15,9 @@ async function init() {
     drawDices();
 
     while (true) {
-        let result = await turn().next()
+        let result = await turn().next();
         if (result.value == "end") {
-            break
+            break;
         }
     }
 }

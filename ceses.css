@@ -1,15 +1,15 @@
 body
 {
-    background-color: rgb(167, 162, 142);
+    background-color: #a7927e;
     font-size: 15px;
     font-family: 'Comic Sans MS';
+    color: #3d372f;
     image-rendering: crisp-edges;
 }
 
 #header
 {
     line-height: 3rem;
-    border: 1px solid black;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -38,11 +38,12 @@ body
 
 #game
 {
+    position: relative;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     flex-flow: row;
-    border: 1px solid black;
+    border: 1px solid rgb(48, 47, 47);
     margin-left: auto;
     margin-right: auto;
     margin-top: 2rem;
@@ -50,6 +51,19 @@ body
     padding: 1rem 0;
     box-sizing: 1rem;
     text-align: center;
+    max-width: 400px;
+}
+
+#game.fullscreen {
+    position: fixed;
+    height: 100%;
+    min-width: 100vw;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: #a7927e;
 }
 
 #board
@@ -64,7 +78,6 @@ body
 #dices {
     display: flex;
     flex-flow: column;
-    padding: 0.5rem;
 }
 
 .dice
@@ -127,7 +140,7 @@ body
 
 .pawn.highlighted,
 #dices.highlighted .dice {
-    filter: saturate(1.56) drop-shadow(0 2px 10px rgb(0, 255, 200));
+    filter: saturate(2) brightness(1.2) drop-shadow(0 0 10px rgb(196, 241, 227)) drop-shadow(0 0 4px rgb(196, 241, 227));
 }
 
 .pawn.sticked {
@@ -153,14 +166,39 @@ body
 }
 
 
+.icon.fullscreen
+{
+    display: block;
+    position: absolute;
+    background: url('./resources/fullscreen.png') no-repeat;
+    width: 64px;
+    height: 64px;
+    top: 12px;
+    left: 12px;
+}
 
+.icon.fullscreen.on
+{
+    background: url('./resources/minimaze.png') no-repeat;
+
+}
+
+.icon.fullscreen:hover
+{
+    filter: brightness(1.2);
+}
+
+.icon.fullscreen:active
+{
+    filter: brightness(1.1) saturate(0.8);
+
+}
 
 
 #footer
 {
     line-height: 3rem;
     width: 100%;
-    border: 1px solid black;
     margin-left: auto;
     margin-right: auto;
     text-align: center;

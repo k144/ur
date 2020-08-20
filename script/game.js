@@ -1,5 +1,7 @@
 const MaxPos = 15;
 
+let MoveFlag = false;
+
 
 function locateTile(pos, side) {
     let row, col;
@@ -65,6 +67,7 @@ class Pawn {
         let style = this.div.style;
         let [offX, offY] = [passevt.layerX, passevt.layerY];
         document.onmousemove = (evt) => {
+            MoveFlag = true;
             style.position = "fixed";
             style.left = `${evt.clientX - offX}px`;
             style.top = `${evt.clientY - offY}px`;
@@ -81,6 +84,7 @@ class Pawn {
         let offY = firstTouch.pageY - rect.top;
         // let [offX, offY] = [passevt.layerX, passevt.layerY];
         document.ontouchmove = (evt) => {
+            MoveFlag = true;
             style.position = "fixed";
             let touch = evt.targetTouches[0];
             style.left = `${touch.screenX - offX}px`;
@@ -266,10 +270,6 @@ function clearPawns(side) {
 
 }
 
-let MoveFlag = false;
-
-document.addEventListener("mousemove", () => MoveFlag = true);
-document.addEventListener("touchmove", () => MoveFlag = true);
 
 async function getSelectedPawn(side) {
     let pawn;

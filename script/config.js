@@ -1,9 +1,9 @@
 // zmienić na klasę
 let Config = {
     version: {
-        number: "0.8.3",
+        number: "0.8.4",
         name: "Sargon Wielki (pre)",
-        date: "2020.08.18"
+        date: "2020.08.20"
     }
 };
 
