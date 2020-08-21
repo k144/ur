@@ -2,7 +2,7 @@
 let Config = {
     version: {
         number: "0.8.4",
-        name: "Sargon Wielki (pre)",
+        name: "Bogowie i Królowie (pre)",
         date: "2020.08.20"
     }
 };
