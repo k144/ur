@@ -135,34 +135,3 @@ function drawVersion() {
     `wersja ${v.number} - ${v.name}<br>
     wydana w dniu ${v.date}`;
 }
-
-function drawButtons() {
-
-    if (isTouchDevice) {
-
-        let fullscreenButton = document.createElement("span");
-        fullscreenButton.id = "fullscreen-icon"
-        fullscreenButton.className = "icon fullscreen"
-
-        fullscreenButton.onclick = (evt) => {
-            evt.target.classList.toggle("on");
-            GameDiv.classList.toggle("fullscreen");
-            if (document.fullscreen) {
-                let funcs = ["exit", "mozCancel", "webkitExit", "msExit"];
-                for (const func of funcs) {
-                    if (document[func + "Fullscreen"]) {
-                        document[func + "Fullscreen"]();
-                        break;
-                    }
-                }
-            } else {
-                GameDiv.requestFullscreen();
-            }
-        }
-
-        GameDiv.appendChild(fullscreenButton);
-
-    }
-
-}
-

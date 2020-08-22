@@ -140,6 +140,7 @@ body
 
 .pawn.highlighted,
 #dices.highlighted .dice {
+    touch-action: none;
     filter: saturate(2) brightness(1.2) drop-shadow(0 0 10px rgb(196, 241, 227)) drop-shadow(0 0 4px rgb(196, 241, 227));
 }
 
@@ -165,32 +166,6 @@ body
     background: url('./resources/black_pawn.png');
 }
 
-
-.icon.fullscreen
-{
-    display: block;
-    position: absolute;
-    background: url('./resources/fullscreen.png') no-repeat;
-    width: 64px;
-    height: 64px;
-    top: 12px;
-    left: 12px;
-}
-
-.icon.fullscreen.on
-{
-    background: url('./resources/minimaze.png') no-repeat;
-
-}
-
-.icon.fullscreen:hover
-{
-    filter: brightness(1.2);
-}
-
-.icon.fullscreen:active
-{
-    filter: brightness(1.1) saturate(0.8);
 
 }
 

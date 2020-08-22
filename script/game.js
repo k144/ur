@@ -80,15 +80,15 @@ class Pawn {
         let style = this.div.style;
         let rect = passevt.target.getBoundingClientRect()
         let firstTouch = passevt.targetTouches[0];
-        let offX = firstTouch.pageX - rect.left;
-        let offY = firstTouch.pageY - rect.top;
+        let offX = firstTouch.clientX - rect.left;
+        let offY = firstTouch.clientY - rect.top;
         // let [offX, offY] = [passevt.layerX, passevt.layerY];
         document.ontouchmove = (evt) => {
             MoveFlag = true;
             style.position = "fixed";
             let touch = evt.targetTouches[0];
-            style.left = `${touch.screenX - offX}px`;
-            style.top = `${touch.screenY - offY}px`;
+            style.left = `${touch.clientX - offX}px`;
+            style.top = `${touch.clientY - offY}px`;
         }
 
     }
@@ -209,10 +209,10 @@ async function getElm(event = "click") {
         document.addEventListener(event, (evt) => {
 
             let x = evt.clientX
-            || evt.changedTouches[0].screenX;
+            || evt.changedTouches[0].clientX;
 
             let y = evt.clientY
-            || evt.changedTouches[0].screenY;
+            || evt.changedTouches[0].clientY;
 
             let elm = document.elementFromPoint(x, y);
             resolve(elm);

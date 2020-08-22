@@ -5,8 +5,6 @@ async function init() {
     }
     drawVersion();
 
-    drawButtons();
-
     preloadImgs();
 
     drawBoard();
