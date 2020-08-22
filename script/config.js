@@ -1,9 +1,9 @@
 // zmienić na klasę
 let Config = {
     version: {
-        number: "0.8.4",
+        number: "0.8.5",
         name: "Bogowie i Królowie (pre)",
-        date: "2020.08.20"
+        date: "2020.08.22"
     }
 };
 
@@ -55,3 +55,5 @@ function showLogOnPage() {
         output.innerHTML += args.join(" ") + "<br/>";
     }
 }
+
+showLogOnPage();

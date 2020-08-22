@@ -207,8 +207,13 @@ async function getClicked() {
 async function getElm(event = "click") {
     return new Promise((resolve) => {
         document.addEventListener(event, (evt) => {
-            let x = evt.clientX;
-            let y = evt.clientY;
+
+            let x = evt.clientX
+            || evt.changedTouches[0].screenX;
+
+            let y = evt.clientY
+            || evt.changedTouches[0].screenY;
+
             let elm = document.elementFromPoint(x, y);
             resolve(elm);
         }, { once: true })
@@ -254,7 +259,7 @@ function clearPawns(side) {
         "mouseleave",
         "mousedown",
         "mouseup",
-        "tochmove",
+        "touchmove",
         "touchend",
     ];
 
@@ -275,23 +280,29 @@ async function getSelectedPawn(side) {
     let pawn;
     while (true) {
 
-        let downElm = await getElm("mousedown");
+        let downElm = isTouchDevice
+        ? await getElm("touchstart")
+        : await getElm("mousedown");
+
         MoveFlag = false;
         pawn = getPawn(downElm);
         if (!pawn || !(pawn.side == side) || !pawn.canMove()) {
             continue;
         }
 
-        let upElm = await getElm("mouseup")
-            if (   MoveFlag == false
-                || upElm == locateTile(pawn.pos + TilesToMove, pawn.side)
-                || upElm.classList.contains("pawn") && (
-                       upElm.dataset.side != pawn.side
-                    || Pawns[upElm.dataset.side][upElm.dataset.nth].pos == MaxPos
-                )
-            ) {
-                return pawn;
-            }
+        let upElm = isTouchDevice
+        ? await getElm("touchend")
+        : await getElm("mouseup");
+
+        if (   MoveFlag == false
+            || upElm == locateTile(pawn.pos + TilesToMove, pawn.side)
+            || upElm.classList.contains("pawn") && (
+                    upElm.dataset.side != pawn.side
+                || Pawns[upElm.dataset.side][upElm.dataset.nth].pos == MaxPos
+            )
+        ) {
+            return pawn;
+        }
 
     }
 }
