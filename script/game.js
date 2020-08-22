@@ -48,7 +48,7 @@ class Pawn {
     makeGrabable() {
         if (isTouchDevice) {
             this.div.ontouchstart = (evt) => this.stickTouch(evt);
-            this.div.ontouchend = () => {
+            this.div.ontouchend = this.div.ontouchcancel = () => {
                 document.ontouchmove = null;
                 this.unstick();
             }
@@ -261,6 +261,7 @@ function clearPawns(side) {
         "mouseleave",
         "mousedown",
         "mouseup",
+        "touchstart",
         "touchmove",
         "touchend",
     ];
