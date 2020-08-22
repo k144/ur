@@ -1,7 +1,7 @@
 // zmienić na klasę
 let Config = {
     version: {
-        number: "0.8.5",
+        number: "0.8.6",
         name: "Bogowie i Królowie (pre)",
         date: "2020.08.22"
     }

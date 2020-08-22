@@ -236,13 +236,15 @@ async function roll() {
 
     await Promise.all(Dices.map(async function (dice) {
         const speed = Math.random() * 1.6 + 1.45;
+        dice.roll();
         for (let t = 100; t < 500; t = t * speed + 1) {
-            dice.roll();
             await sleep(t);
+            dice.roll();
         }
         TilesToMove += dice.drawn;
         return;
     }));
+    await sleep(200);
     // for (let dice of Dices) {
     //     await dice.roll();
     //     TilesToMove += dice.drawn;
