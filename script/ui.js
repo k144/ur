@@ -1,6 +1,8 @@
 const GameDiv = document.getElementById("game");
 const BoardDiv = document.getElementById("board");
-const DicesDiv = document.getElementById('dices');
+const DicesDiv = document.getElementById("dices");
+const SettingsIcon = document.getElementById("icon-settings");
+const SettingsMenu = document.getElementById("menu-settings");
 
 const TileTypeMap = new Map([
     ['*', "rosette"],
@@ -135,3 +137,16 @@ function drawVersion() {
     `wersja ${v.number} - ${v.name}<br>
     wydana w dniu ${v.date}`;
 }
+
+SettingsIcon.onclick = (evt) => {
+    SettingsIcon.classList.toggle("opened");
+    SettingsMenu.classList.toggle("opened");
+    window.onclick = window.onclick ? null : (evt) => {
+        if (evt.target != SettingsMenu && evt.target != SettingsIcon) {
+            SettingsIcon.classList.remove("opened");
+            SettingsMenu.classList.remove("opened");
+            window.onclick = null;
+        }
+
+    }
+};

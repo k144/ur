@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Royal Game of Ur</title>
-    <link rel="stylesheet" href="ceses.css"/>
+    <link rel="stylesheet" href="ceses.css" />
     <script defer src="./script/config.js"></script>
     <script defer src="./script/common.js"></script>
     <script defer src="./script/game.js"></script>
     <script defer src="./script/ui.js"></script>
     <script defer src="./script/main.js"></script>
 </head>
+
 <body>
-    
+
     <main>
         <div id="header">
             <p>Królewska gra z Ur</p>
@@ -21,18 +23,25 @@
             <div id="dices"></div>
             <div id="board"></div>
         </div>
-        </label>
-        <button onclick="resetDefaults();">Przywróć ustawienia domyślne</button>
-        <br>
-        Automatyczny rzut kośćmi:
-        <button onclick='Config.set("autoRoll", true)'>Włącz</button>
-        <button onclick='Config.set("autoRoll", false)'>Wyłącz</button>
+        <div class="dropup">
+            <div id="menu-settings" class="menu">
+                <button onclick="resetDefaults();">Przywróć ustawienia domyślne</button>
+                <br>
+                Automatyczny rzut kośćmi:
+                <button onclick='Config.set("autoRoll", true)'>Włącz</button>
+                <button onclick='Config.set("autoRoll", false)'>Wyłącz</button>
+            </div>
+            <div id="icon-settings" class="icon"></div>
+        </div>
         <div id="footer">
             <p id="version"></p>
-            <p>jeśli znajdziesz jakiś błąd - <a href="https://github.com/k144/ur/issues">daj nam znać na GitHubie</a></p>
-        
+            <p>jeśli znajdziesz jakiś błąd - <a href="https://github.com/k144/ur/issues">daj nam znać na GitHubie</a>
+            </p>
+
         </div>
+
     </main>
     <div id="console"></div>
 </body>
+
 </html>
