@@ -15,11 +15,36 @@ body
 
 #header
 {
-    line-height: 3rem;
+    line-height: 3em;
+    font-size: 1.2rem;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    margin-bottom: 3em;
 }
+#header p::before,
+#header p::after {
+    content: "";
+    display: inline-block;
+    position: relative;
+    top: 3em;
+    width: 10em;
+    height: 7em;
+    background: url(./resources/lamassu.png) no-repeat center;
+    background-size: contain;
+}
+
+#header p::after {
+    transform: scaleX(-1);
+}
+
+/* #header::before {
+    float: right;
+}
+
+#header::after {
+    float: left;
+} */
 
 .info {
     display: none;
