@@ -100,12 +100,12 @@ async function preloadImgs() {
     }
 }
 
-async function displayInfo(message) {
+async function displayInfo(message, time=2) {
     const transition = 200;
-    const duration = 2 * 1000;
+    const duration = time * 1000;
 
     let infoElm = document.createElement("div");
-    document.getElementById("game").append(infoElm);
+    document.getElementById("infoPanel").append(infoElm);
     let span = document.createElement("span");
     infoElm.append(span);
     infoElm.className = "info";
@@ -114,14 +114,14 @@ async function displayInfo(message) {
 
     async function remove() {
         infoElm.style.opacity = 0;
-        infoElm.style.display = "flex";
+        infoElm.style.display = "inline-block";
         await sleep(transition);
         infoElm.parentNode.removeChild(infoElm);
     }
 
 
     span.innerHTML = message;
-    infoElm.style.display = "flex";
+    infoElm.style.display = "inline-block";
     infoElm.style.opacity = 0;
     await sleep(transition);
     infoElm.style.opacity = 1;

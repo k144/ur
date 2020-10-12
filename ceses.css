@@ -56,24 +56,27 @@ body
     float: left;
 } */
 
+#infoPanel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    top: 0;
+    width: calc(50% - 212px);
+}
+
 .info {
     display: none;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    border: 1px solid var(--font-color);
-    font-size: 1.6rem;
-    height: 5em;
-    padding: 1em;
-    position: fixed;
-    background: var(--bg);
-    box-shadow: 0 10px 20px 0 #00000044;
-    width: 20em;
-    box-sizing: border-box;
-    left: 2rem;
-    top: 2rem;
+    border: 64px solid transparent;
+    border-image: url('./resources/border_clay_tablet.png')repeat;
+    border-image-slice: 64 fill;
+    font-size: 1.2rem;
     z-index: 100;
     user-select: none;
+    text-align: center;
 }
 
 
@@ -282,6 +285,13 @@ body
     color: #0108;
     z-index: 100;
     pointer-events: none;
+}
+
+@media only screen and (max-width: 1150px) {
+    #infoPanel {
+        width: 100%;
+        top: 150px
+    }
 }
 
 @media only screen and (max-width: 368px) {

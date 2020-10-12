@@ -314,11 +314,7 @@ async function getSelectedPawn(side) {
 
 let side = Side.LEFT;
 async function* turn() {
-    if (side == Side.LEFT) {
-        side = Side.RIGHT;
-    } else {
-        side = Side.LEFT;
-    }
+    side = side == Side.LEFT ? Side.RIGHT : Side.LEFT;
 
     let extraRoll = false;
     do {
@@ -348,7 +344,7 @@ async function* turn() {
 
         let nFinished = locateTile(MaxPos, pawn.side).childElementCount
         if (nFinished >= NPawns) {
-            displayInfo("wygrywa: ", side == Side.LEFT ? "lewa strona" : "prawa strona")
+            displayInfo("wygrywają " + (Pawns[side][0].color == Color.WHITE ? "białe pionki" : "czarne pionki"), 10);
             return "end";
         }
         extraRoll = locateTile(pawn.pos, side).dataset.extraRoll;
