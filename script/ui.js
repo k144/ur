@@ -4,6 +4,9 @@ const DicesDiv = document.getElementById("dices");
 const SettingsIcon = document.getElementById("icon-settings");
 const SettingsMenu = document.getElementById("menu-settings");
 
+let pawnStackStyle = document.createElement('style');
+let updateConfigCallbacks = [];
+
 const TileTypeMap = new Map([
     ['*', "rosette"],
     ['H', "gate"],
@@ -61,7 +64,7 @@ function drawBoard() {
 }
 
 function drawPawns() {
-    for (let i = 0; i < NPawns; i++) {
+    for (let i = 0; i < Config.nPawns.val; i++) {
         Pawns[0].push(new Pawn(Color.WHITE, Side.LEFT, i));
         Pawns[0][i].draw();
         Pawns[1].push(new Pawn(Color.BLACK, Side.RIGHT, i));
@@ -70,11 +73,11 @@ function drawPawns() {
 }
 
 function stylePawnStack() {
-    let style = document.createElement('style');
-    style.type = 'text/css';
+    pawnStackStyle.type = 'text/css';
+    pawnStackStyle.innerHTML = '';
     let distance = 4;
-    for (let i = 1; i < NPawns; i++) {
-        style.innerHTML +=
+    for (let i = 1; i < Config.nPawns.val; i++) {
+        pawnStackStyle.innerHTML +=
             `
         .tile .pawn:nth-child(${i + 1}) {
             position: absolute;
@@ -82,7 +85,7 @@ function stylePawnStack() {
         }
         `;
     }
-    document.getElementsByTagName('head')[0].appendChild(style);
+    document.getElementsByTagName('head')[0].appendChild(pawnStackStyle);
 }
 
 function drawDices() {
@@ -142,7 +145,6 @@ SettingsIcon.onclick = (evt) => {
     SettingsMenu.classList.toggle("opened");
     window.onclick = window.onclick ? null : (evt) => {
         if (!(evt.target == SettingsMenu || SettingsMenu.contains(evt.target)) && evt.target != SettingsIcon) {
-            console.log("bruh");
             SettingsIcon.classList.remove("opened");
             SettingsMenu.classList.remove("opened");
             window.onclick = null;
@@ -152,14 +154,16 @@ SettingsIcon.onclick = (evt) => {
 };
 
 
-function switchFlick (evt, opt, elm) {
-    console.log(Config[opt].val);
+function switchFlick (opt, elm) {
+    console.log(Config[opt].val)
     if (Config[opt].val == false) {
+        console.log("turning on")
         setConfig(opt, true);
         callIfExists(Config[opt].control.callbackOn);
         elm.classList.add("on");
         elm.classList.remove("off");
     } else {
+        console.log("turning off")
         setConfig(opt, false);
         callIfExists(Config[opt].control.callbackOff);
         elm.classList.add("off");
@@ -167,6 +171,9 @@ function switchFlick (evt, opt, elm) {
     }
 }
 
+function lockOption (opt, val, elm) {
+    localStorage.setItem(opt, val);
+}
 
 async function populateSettings () {
     for (let opt in Config) {
@@ -187,7 +194,15 @@ async function populateSettings () {
                 off.innerText = "off";
                 elm.prepend(on)
                 elm.append(off)
-                elm.onclick = (evt) => switchFlick(evt, opt, elm);
+                elm.onclick = () => switchFlick(opt, elm);
+                updateConfigCallbacks.push(() => {
+                    let state = Config[opt].val ? "on" : "off";
+                    if (!elm.classList.contains(state)) {
+                        console.log(state, elm.classList.contains(state));
+                        elm.classList.remove(state == "on" ? "off" : "on");
+                        elm.classList.add(state);
+                    }
+                });
                 break;
 
             case "slider":
@@ -195,8 +210,46 @@ async function populateSettings () {
                 slider.type = "range";
                 slider.min = Config[opt].control.min;
                 slider.max = Config[opt].control.max;
-                slider.value = Config[opt].control.val;
+                slider.value = Config[opt].val;
+                let numberField = document.createElement("input");
+                numberField.min = 1;
+                numberField.value = Config[opt].val;
+
+                slider.oninput = () => {
+                    let v = slider.value;
+                    if (GameHasStarted) {
+                        lockOption(opt, v, elm)
+                    } else {
+                        setConfig(opt, v);
+                        callIfExists(Config[opt].control.callback);
+                    }
+                    numberField.value = v;
+                }
+                numberField.oninput = () => {
+                    let v = numberField.value;
+                    if (v < 1) {
+                        v = 1;
+                        numberField.value = v;
+                    }
+                    if (GameHasStarted) {
+                        lockOption(opt, v, elm)
+                    } else {
+                        setConfig(opt, v);
+                        callIfExists(Config[opt].control.callback);
+                    }
+                    slider.value = v;
+                }
+                
+                label.appendChild(numberField)
                 elm.appendChild(slider);
+                
+                updateConfigCallbacks.push(() => {
+                    let realVal = Config[opt].val;
+                    slider.value = realVal;
+                    numberField.value = realVal;
+                    callIfExists(Config[opt].control.callback);
+                });
+
                 break;
         
             default:
@@ -207,7 +260,13 @@ async function populateSettings () {
     }
     let resetBtn = document.createElement("button");
     resetBtn.innerHTML = "Przywróć ustawienia</br>domyślne";
-    resetBtn.onclick = resetDefaults();
+    resetBtn.onclick = () => resetDefaults();
     resetBtn.classList.add("settings-item", "button");
     SettingsMenu.append(resetBtn);
+}
+
+function updateSettings () {
+    for (let callback of updateConfigCallbacks) {
+        callback();
+    }
 }

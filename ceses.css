@@ -299,7 +299,7 @@ body
     border: 2px outset rgba(209, 193, 177, 0.808);
     background-color: #cabca5;
     padding: 8px;
-    margin: 0;
+    margin: 8px 0;
     z-index: 1;
 }
 
@@ -338,13 +338,15 @@ body
     outline: none;
 }
 
-.settings-item.bool {
-    height: 48px;
-}
-
 .settings-item.slider {
     flex-direction: column;
-    height: 64px;
+}
+
+.settings-item.slider label input {
+    display: inline-block;
+    width: 2em;
+    text-align: center;
+    margin-left: 10px;
 }
 
 

@@ -1,7 +1,7 @@
 let version = {
-    number: "0.8.10",
+    number: "0.8.11",
     name: "Bogowie i Królowie (pre)",
-    date: "2020.10.13"
+    date: "2020.10.15"
 }
 
 
@@ -23,6 +23,12 @@ let Config = {
             min: 1,
             max: 7,
             label: "Liczba pionków",
+            callback: () => {
+                locateTile(0, Side.LEFT).innerHTML = '';
+                locateTile(0, Side.RIGHT).innerHTML = '';
+                drawPawns();
+                stylePawnStack();
+            }
         },
     },
 };
@@ -31,7 +37,8 @@ let Config = {
 function setConfigVal() {
     for (const opt in Config) {
         if (localStorage.getItem(opt) == null) {
-            localStorage.setItem(opt, Config[opt].default);
+            Config[opt].val = Config[opt].default;
+            continue;
         }
         if (typeof (Config[opt].default) == "boolean") {
             Config[opt].val = localStorage.getItem(opt) == "true";
@@ -45,6 +52,7 @@ function setConfigVal() {
 function resetDefaults() {
     localStorage.clear();
     setConfigVal();
+    updateSettings();
     return;
 }
 
