@@ -254,15 +254,97 @@ body
 
 #menu-settings
 {
-    width: 256px;
+    width: 192px;
     max-height: 512px;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
     position: absolute;
     bottom: 64px;
+}
+
+.settings-item {
+    font-size: 1em !important;
+    margin: 8px -32px;
+    border: 2px inset rgba(209, 193, 177, 0.808);
+    padding: 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-item:first-child {
+    margin-top: -16px;
+}
+
+.settings-item:last-child {
+    display: block;
+    margin-bottom: -16px;
+}
+
+
+.settings-item.bool {
+    cursor: pointer;
+    justify-content: space-evenly;
+    padding: 0;
+}
+
+.settings-item.bool label {
+    cursor: pointer;
+    border: 2px outset rgba(209, 193, 177, 0.808);
+    background-color: #cabca5;
+    padding: 8px;
+    margin: 0;
+    z-index: 1;
+}
+
+.settings-item.bool span {
+    display: none;
+}
+
+
+.settings-item.bool.on span.on {
+    display: block;
+}
+
+.settings-item.bool.off span.off {
+    display: block;
+    opacity: .5;
+}
+
+
+.settings-item.button {
+    background-color: #cabca5;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: 4px;
+    border-bottom-width: 10px;
+    border-style: outset;
+}
+
+.settings-item.button:active {
+    background-color: #ebdfcc;
+    border-color: #faf1e4;
+    border-bottom-width: 4px;
+    margin-top: 14px;
+}
+
+.settings-item.button:focus {
+    outline: none;
+}
+
+.settings-item.bool {
+    height: 48px;
+}
+
+.settings-item.slider {
+    flex-direction: column;
+    height: 64px;
 }
 
 
