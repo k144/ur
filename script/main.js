@@ -1,6 +1,6 @@
 async function init() {
-    setDefaults();
-    if (Config.nPawns < 1) {
+    setConfigVal();
+    if (Config.nPawns.val < 1) {
         resetDefaults();
     }
     drawVersion();
@@ -11,6 +11,7 @@ async function init() {
     stylePawnStack();
     drawPawns();
     drawDices();
+    populateSettings();
 
     while (true) {
         let result = await turn().next();

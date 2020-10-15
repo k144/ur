@@ -3,7 +3,7 @@ let Dices = [];
 
 let TilesToMove = 0;
 
-const NPawns = Config.nPawns;
+const NPawns = Config.nPawns.val;
 // Config = {} zdeklarowany w pliku config.js
 
 const Color = { BLACK: 1, WHITE: 2 };
@@ -17,6 +17,12 @@ function rand(min, max) {
     return Math.floor((Math.random() * max) + min);
 }
 
+function callIfExists(func) {
+    if (typeof func === "function") {
+        func();
+    }
+}
+
 let isTouchDevice = (() => {
     let prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
     let mq = function (query) {
@@ -28,3 +34,5 @@ let isTouchDevice = (() => {
     var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
     return mq(query);
 })();
+
+let GameHasStarted = false;

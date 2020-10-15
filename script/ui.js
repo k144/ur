@@ -132,17 +132,17 @@ async function displayInfo(message, time=2) {
 
 function drawVersion() {
     let elm = document.getElementById("version");
-    let v = Config.version;
     elm.innerHTML =
-    `wersja ${v.number} - ${v.name}<br>
-    wydana w dniu ${v.date}`;
+    `wersja ${version.number} - ${version.name}<br>
+    wydana w dniu ${version.date}`;
 }
 
 SettingsIcon.onclick = (evt) => {
     SettingsIcon.classList.toggle("opened");
     SettingsMenu.classList.toggle("opened");
     window.onclick = window.onclick ? null : (evt) => {
-        if (evt.target != SettingsMenu && evt.target != SettingsIcon) {
+        if (!(evt.target == SettingsMenu || SettingsMenu.contains(evt.target)) && evt.target != SettingsIcon) {
+            console.log("bruh");
             SettingsIcon.classList.remove("opened");
             SettingsMenu.classList.remove("opened");
             window.onclick = null;
@@ -150,3 +150,64 @@ SettingsIcon.onclick = (evt) => {
 
     }
 };
+
+
+function switchFlick (evt, opt, elm) {
+    console.log(Config[opt].val);
+    if (Config[opt].val == false) {
+        setConfig(opt, true);
+        callIfExists(Config[opt].control.callbackOn);
+        elm.classList.add("on");
+        elm.classList.remove("off");
+    } else {
+        setConfig(opt, false);
+        callIfExists(Config[opt].control.callbackOff);
+        elm.classList.add("off");
+        elm.classList.remove("on");
+    }
+}
+
+
+async function populateSettings () {
+    for (let opt in Config) {
+        let elm = document.createElement("div");
+        let label = document.createElement("label");
+        elm.appendChild(label);
+        label.innerText = Config[opt].control.label;
+        let type = Config[opt].control.type;
+        elm.classList.add("settings-item", type)
+        switch (type) {
+            case "bool":
+                elm.classList.add(Config[opt].val ? "on" : "off");
+                let on = document.createElement("span");
+                let off = document.createElement("span");
+                on.className = "on";
+                on.innerText = "on";
+                off.className = "off";
+                off.innerText = "off";
+                elm.prepend(on)
+                elm.append(off)
+                elm.onclick = (evt) => switchFlick(evt, opt, elm);
+                break;
+
+            case "slider":
+                let slider = document.createElement("input");
+                slider.type = "range";
+                slider.min = Config[opt].control.min;
+                slider.max = Config[opt].control.max;
+                slider.value = Config[opt].control.val;
+                elm.appendChild(slider);
+                break;
+        
+            default:
+                console.log("Błąd::Zły typ kontrolki konfiguracji");
+                break;
+        }
+        SettingsMenu.append(elm);
+    }
+    let resetBtn = document.createElement("button");
+    resetBtn.innerHTML = "Przywróć ustawienia</br>domyślne";
+    resetBtn.onclick = resetDefaults();
+    resetBtn.classList.add("settings-item", "button");
+    SettingsMenu.append(resetBtn);
+}

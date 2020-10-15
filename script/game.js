@@ -208,11 +208,17 @@ async function getElm(event = "click") {
     return new Promise((resolve) => {
         document.addEventListener(event, (evt) => {
 
+            if (evt.target.id == "dices") {
+            console.log(evt.target.id)
+                resolve(DicesDiv.firstChild);
+                return;
+            }
+
             let x = evt.clientX
-            || evt.changedTouches[0].clientX;
+            || evt.changedTouches[0].clientX || 0;
 
             let y = evt.clientY
-            || evt.changedTouches[0].clientY;
+            || evt.changedTouches[0].clientY || 0;
 
             let elm = document.elementFromPoint(x, y);
             resolve(elm);
@@ -223,7 +229,7 @@ async function getElm(event = "click") {
 async function roll() {
     TilesToMove = 0;
 
-    if (Config.autoRoll == false) {
+    if (Config.autoRoll.val == false) {
         DicesDiv.classList.add("highlighted");
         while (true) {
             let elm = await getElm();
@@ -319,6 +325,7 @@ async function* turn() {
     let extraRoll = false;
     do {
         await roll();
+        GameHasStarted = true;
         if (TilesToMove <= 0) { return };
 
         let nMovable = 0;

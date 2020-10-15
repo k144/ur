@@ -1,43 +1,62 @@
-// zmienić na klasę
+let version = {
+    number: "0.8.10",
+    name: "Bogowie i Królowie (pre)",
+    date: "2020.10.13"
+}
+
+
 let Config = {
-    version: {
-        number: "0.8.8",
-        name: "Bogowie i Królowie (pre)",
-        date: "2020.08.23"
-    }
+    autoRoll: {
+        default: false,
+        control: {
+            type: "bool",
+            label: "Automatyczny rzut kośćmi",
+            callbackOn: () => {
+                DicesDiv.click();
+            }
+        },
+    },
+    nPawns: {
+        default: 5,
+        control: {
+            type: "slider",
+            min: 1,
+            max: 7,
+            label: "Liczba pionków",
+        },
+    },
 };
 
-const Defaults = new Map([
-    ["autoRoll", false],
-    ["nPawns", 7],
-]);
 
-
-function setDefaults() {
-    for (const [key, value] of Defaults) {
-        if (localStorage.getItem(key) == null) {
-            localStorage.setItem(key, value);
+function setConfigVal() {
+    for (const opt in Config) {
+        if (localStorage.getItem(opt) == null) {
+            localStorage.setItem(opt, Config[opt].default);
         }
-        if (typeof (value) == "boolean") {
-            Config[key] = localStorage.getItem(key) == "true";
+        if (typeof (Config[opt].default) == "boolean") {
+            Config[opt].val = localStorage.getItem(opt) == "true";
             continue;
         }
-        Config[key] = localStorage.getItem(key);
+        Config[opt].val = localStorage.getItem(opt);
     }
     return;
 }
 
 function resetDefaults() {
     localStorage.clear();
-    setDefaults();
+    setConfigVal();
     return;
 }
 
-setDefaults();
+setConfigVal();
 
-Config.set = function (key, value) {
+function setConfig (key, value) {
     localStorage.setItem(key, value);
-    Config[key] = value;
+    if (typeof (value) == "boolean") {
+        Config[key].val = value;
+        return;
+    }
+    Config[key].val = value;
 }
 
 //resetDefaults();
