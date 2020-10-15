@@ -1,5 +1,5 @@
 let version = {
-    number: "0.8.11",
+    number: "0.8.12",
     name: "Bogowie i Królowie (pre)",
     date: "2020.10.15"
 }

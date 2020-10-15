@@ -101,6 +101,13 @@ async function preloadImgs() {
         img0.src = `./resources/dice_0_${i}.png`;
         img1.src = `./resources/dice_1_${i}.png`;
     }
+    let urls = [
+        "border_clay_tablet.png"
+    ];
+    for (url in urls) {
+        let img = new Image();
+        img.src = `./resources/${url}`;
+    }
 }
 
 async function displayInfo(message, time=2) {
