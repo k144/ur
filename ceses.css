@@ -1,6 +1,7 @@
 :root {
     --bg: #a7927e;
-    --font-color: #3d372f;
+    /* --font-color: #3d372f; */
+    --font-color: #000b;
 }
 
 body
@@ -262,7 +263,7 @@ body
     left: 0;
     right: 0;
     position: absolute;
-    bottom: 64px;
+    bottom: -32px;
 }
 
 .settings-item {
@@ -278,13 +279,13 @@ body
     justify-content: center;
 }
 
-.settings-item:first-child {
+#menu-settings > :first-child {
     margin-top: -16px;
 }
 
-.settings-item:last-child {
+#menu-settings  > :last-child {
     display: block;
-    margin-bottom: -16px;
+    margin-bottom: -32px !important;
 }
 
 
@@ -320,18 +321,19 @@ body
 
 .settings-item.button {
     background-color: #cabca5;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 8px auto;
     border-width: 4px;
     border-bottom-width: 10px;
     border-style: outset;
+    color: var(--font-color);
+    font-family: 'Comic Sans MS';
 }
 
 .settings-item.button:active {
     background-color: #ebdfcc;
     border-color: #faf1e4;
     border-bottom-width: 4px;
-    margin-top: 14px;
+    margin-top: 14px !important;
 }
 
 .settings-item.button:focus {
@@ -347,6 +349,20 @@ body
     width: 2em;
     text-align: center;
     margin-left: 10px;
+}
+
+#refresh-prompt {
+    display: none;
+    border: 2px outset rgba(209, 193, 177, 0.808);
+    padding: 8px;
+    margin: 8px -32px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#refresh-prompt p {
+    width: 180px;
+    margin: 8px auto
 }
 
 

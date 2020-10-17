@@ -350,7 +350,7 @@ async function* turn() {
         clearPawns(side);
 
         let nFinished = locateTile(MaxPos, pawn.side).childElementCount
-        if (nFinished >= NPawns) {
+        if (nFinished >= Config.nPawns.val) {
             displayInfo("wygrywają " + (Pawns[side][0].color == Color.WHITE ? "białe pionki" : "czarne pionki"), 10);
             return "end";
         }

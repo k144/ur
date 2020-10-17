@@ -178,9 +178,6 @@ function switchFlick (opt, elm) {
     }
 }
 
-function lockOption (opt, val, elm) {
-    localStorage.setItem(opt, val);
-}
 
 async function populateSettings () {
     for (let opt in Config) {
@@ -224,12 +221,8 @@ async function populateSettings () {
 
                 slider.oninput = () => {
                     let v = slider.value;
-                    if (GameHasStarted) {
-                        lockOption(opt, v, elm)
-                    } else {
-                        setConfig(opt, v);
-                        callIfExists(Config[opt].control.callback);
-                    }
+                    setConfig(opt, v);
+                    callIfExists(Config[opt].control.callback);
                     numberField.value = v;
                 }
                 numberField.oninput = () => {
@@ -238,12 +231,8 @@ async function populateSettings () {
                         v = 1;
                         numberField.value = v;
                     }
-                    if (GameHasStarted) {
-                        lockOption(opt, v, elm)
-                    } else {
-                        setConfig(opt, v);
-                        callIfExists(Config[opt].control.callback);
-                    }
+                    setConfig(opt, v);
+                    callIfExists(Config[opt].control.callback);
                     slider.value = v;
                 }
                 
@@ -265,11 +254,22 @@ async function populateSettings () {
         }
         SettingsMenu.append(elm);
     }
+    let refreshPrompt = document.createElement("div");
+    SettingsMenu.append(refreshPrompt);
+    refreshPrompt.id = "refresh-prompt";
+    refreshPrompt.innerHTML = "<p>Nie można wprowadzić tej zmiany w czasie gry.</p>";
+    let refreshBtn = document.createElement("button");
+    refreshPrompt.append(refreshBtn);
+    refreshBtn.innerHTML = "odśwież stronę";
+    refreshBtn.onclick = () => window.location.reload();;
+    refreshBtn.classList.add("settings-item", "button");
+
     let resetBtn = document.createElement("button");
+    SettingsMenu.append(resetBtn);
     resetBtn.innerHTML = "Przywróć ustawienia</br>domyślne";
     resetBtn.onclick = () => resetDefaults();
     resetBtn.classList.add("settings-item", "button");
-    SettingsMenu.append(resetBtn);
+
 }
 
 function updateSettings () {

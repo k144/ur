@@ -1,13 +1,14 @@
 let version = {
-    number: "0.8.12",
+    number: "0.8.13",
     name: "Bogowie i Królowie (pre)",
-    date: "2020.10.15"
+    date: "2020.10.17"
 }
 
 
 let Config = {
     autoRoll: {
         default: false,
+        changableInGame: true,
         control: {
             type: "bool",
             label: "Automatyczny rzut kośćmi",
@@ -18,12 +19,14 @@ let Config = {
     },
     nPawns: {
         default: 5,
+        changableInGame: false,
         control: {
             type: "slider",
             min: 1,
             max: 7,
             label: "Liczba pionków",
             callback: () => {
+                if (GameHasStarted) { return };
                 locateTile(0, Side.LEFT).innerHTML = '';
                 locateTile(0, Side.RIGHT).innerHTML = '';
                 drawPawns();
@@ -36,6 +39,10 @@ let Config = {
 
 function setConfigVal() {
     for (const opt in Config) {
+        if (!Config[opt].changableInGame && GameHasStarted) {
+            document.getElementById("refresh-prompt").style.display = "block";
+            return;
+        }
         if (localStorage.getItem(opt) == null) {
             Config[opt].val = Config[opt].default;
             continue;
@@ -60,6 +67,10 @@ setConfigVal();
 
 function setConfig (key, value) {
     localStorage.setItem(key, value);
+    if (!Config[key].changableInGame && GameHasStarted) {
+        document.getElementById("refresh-prompt").style.display = "block";
+        return;
+    }
     if (typeof (value) == "boolean") {
         Config[key].val = value;
         return;
