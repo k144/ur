@@ -95,18 +95,21 @@ function drawDices() {
 }
 
 async function preloadImgs() {
-    // Kości
-    for (let i = 0; i < 3; i++) {
-        let [img0, img1] = [new Image(), new Image()];
-        img0.src = `./resources/dice_0_${i}.png`;
-        img1.src = `./resources/dice_1_${i}.png`;
-    }
     let urls = [
-        "border_clay_tablet.png"
+        "border_clay_tablet.png",
+        "dice_0_0.png",
+        "dice_0_1.png",
+        "dice_0_2.png",
+        "dice_1_0.png",
+        "dice_1_1.png",
+        "dice_1_2.png",
     ];
-    for (url in urls) {
-        let img = new Image();
-        img.src = `./resources/${url}`;
+    for (url of urls) {
+        let l = document.createElement("link");
+        l.href = `./resources/${url}`;
+        l.rel = "preload";
+        l.as = "image"
+        document.head.appendChild(l);
     }
 }
 
@@ -162,15 +165,12 @@ SettingsIcon.onclick = (evt) => {
 
 
 function switchFlick (opt, elm) {
-    console.log(Config[opt].val)
     if (Config[opt].val == false) {
-        console.log("turning on")
         setConfig(opt, true);
         callIfExists(Config[opt].control.callbackOn);
         elm.classList.add("on");
         elm.classList.remove("off");
     } else {
-        console.log("turning off")
         setConfig(opt, false);
         callIfExists(Config[opt].control.callbackOff);
         elm.classList.add("off");
@@ -202,7 +202,6 @@ async function populateSettings () {
                 updateConfigCallbacks.push(() => {
                     let state = Config[opt].val ? "on" : "off";
                     if (!elm.classList.contains(state)) {
-                        console.log(state, elm.classList.contains(state));
                         elm.classList.remove(state == "on" ? "off" : "on");
                         elm.classList.add(state);
                     }
