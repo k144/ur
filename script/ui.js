@@ -1,8 +1,6 @@
 const GameDiv = document.getElementById("game");
 const BoardDiv = document.getElementById("board");
 const DicesDiv = document.getElementById("dices");
-const SettingsIcon = document.getElementById("icon-settings");
-const SettingsMenu = document.getElementById("menu-settings");
 
 let pawnStackStyle = document.createElement('style');
 let updateConfigCallbacks = [];
@@ -150,19 +148,6 @@ function drawVersion() {
     wydana w dniu ${version.date}`;
 }
 
-SettingsIcon.onclick = (evt) => {
-    SettingsIcon.classList.toggle("opened");
-    SettingsMenu.classList.toggle("opened");
-    window.onclick = window.onclick ? null : (evt) => {
-        if (!(evt.target == SettingsMenu || SettingsMenu.contains(evt.target)) && evt.target != SettingsIcon) {
-            SettingsIcon.classList.remove("opened");
-            SettingsMenu.classList.remove("opened");
-            window.onclick = null;
-        }
-
-    }
-};
-
 
 function switchFlick (opt, elm) {
     if (Config[opt].val == false) {
@@ -180,6 +165,22 @@ function switchFlick (opt, elm) {
 
 
 async function populateSettings () {
+    const SettingsIcon = document.getElementById("icon-settings");
+    const SettingsMenu = document.getElementById("menu-settings");
+
+    SettingsIcon.onclick = (evt) => {
+        SettingsIcon.classList.toggle("opened");
+        SettingsMenu.classList.toggle("opened");
+        window.onclick = window.onclick ? null : (evt) => {
+            if (!(evt.target == SettingsMenu || SettingsMenu.contains(evt.target)) && evt.target != SettingsIcon) {
+                SettingsIcon.classList.remove("opened");
+                SettingsMenu.classList.remove("opened");
+                window.onclick = null;
+            }
+
+        }
+    };
+
     for (let opt in Config) {
         let elm = document.createElement("div");
         let label = document.createElement("label");

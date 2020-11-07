@@ -1,0 +1,5 @@
+#tutorial {
+    border: 1px solid var(--font-color);
+    padding: 24px;
+    margin: 0 24px;
+}
