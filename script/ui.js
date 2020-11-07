@@ -254,7 +254,7 @@ async function populateSettings () {
         SettingsMenu.append(elm);
     }
     let refreshPrompt = document.createElement("div");
-    SettingsMenu.append(refreshPrompt);
+    SettingsMenu.prepend(refreshPrompt);
     refreshPrompt.id = "refresh-prompt";
     refreshPrompt.innerHTML = "<p>Nie można wprowadzić tej zmiany w czasie gry.</p>";
     let refreshBtn = document.createElement("button");
